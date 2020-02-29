@@ -20,12 +20,10 @@ class Handler(threading.Thread):
         
     def run(self):
         user_msg_data = self.conn.receive()
-        print (user_msg_data)
+    
         user = UserMsg()
         user.ParseFromString(user_msg_data)
-
         print (user)
-
         snapshot_msg_data = self.conn.receive()
         snapshot = SnapshotMsg.ParseFromString(snapshot_msg_data)
 
