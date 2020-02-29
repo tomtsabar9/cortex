@@ -14,7 +14,7 @@ def send_serialized_data(conn, data_stream):
 
     size = struct.unpack('<I', data_stream.read(4))[0]  
     user_raw_data = data_stream.read(size)
-        
+    print (user_raw_data)
     conn.send(user_raw_data)
 
 def send_user_data(conn, data_stream):
@@ -47,7 +47,7 @@ def upload_sample(host, port, path):
 
             send_user_data(conn, raw_data)
 
-            send_snapshot(conn, raw_data)
+            #send_snapshot(conn, raw_data)
 
             
     print("done")
