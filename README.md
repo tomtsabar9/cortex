@@ -4,5 +4,5 @@
 
 Final project in "Advanced System Design" course.
 
-See documentation in 
+See documentation in https://cortex-project.readthedocs.io/en/latest/
 
