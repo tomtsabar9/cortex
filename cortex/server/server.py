@@ -19,15 +19,26 @@ class Handler(threading.Thread):
   
         
     def run(self):
-        user_msg_data = self.conn.receive()
-    
-        user = UserMsg()
-        user.ParseFromString(user_msg_data)
-        print (user)
-        snapshot_msg_data = self.conn.receive()
-        snapshot = SnapshotMsg.ParseFromString(snapshot_msg_data)
 
-        self.conn.close()
+        with self.conn as connection:
+            user_msg_data = connection.receive()
+
+            user = UserMsg()
+            user.ParseFromString(user_msg_data)
+            print (user)
+            while 1:
+                try:
+
+                    snapshot = SnapshotMsg()
+                    snapshot_msg_data = connection.receive()
+
+                    snapshot.ParseFromString(snapshot_msg_data)
+                    print ("got snap")
+                except Exception as e:
+                    print (e)
+                    break
+
+       
 
 
 

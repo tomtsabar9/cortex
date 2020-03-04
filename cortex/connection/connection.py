@@ -16,8 +16,15 @@ class Connection:
         return self.socket.send(struct.pack('<I', len(data)) + data)
 
     def receive(self):
+        data = b''
         size = struct.unpack('<I', self.socket.recv(4))[0]   
-        return self.socket.recv(size)
+       
+        while (size > 0):
+            recv = self.socket.recv(size)
+            size -= len(recv)
+            data += recv
+
+        return data
 
     @classmethod
     def connect(cls, ip, port):
