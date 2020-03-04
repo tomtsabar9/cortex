@@ -12,10 +12,16 @@ def send_serialized_data(conn, data_stream):
     Reads serialized user data from stream and send to connection/
     """
 
-    size = struct.unpack('<I', data_stream.read(4))[0]  
-    user_raw_data = data_stream.read(size)
-    print (user_raw_data)
-    conn.send(user_raw_data)
+    try:
+        size = struct.unpack('<I', data_stream.read(4))[0]  
+        user_raw_data = data_stream.read(size)
+    
+        conn.send(user_raw_data)
+        return True
+    except Exception as e:
+        print (e)
+        return False
+    
 
 def send_user_data(conn, data_stream):
     """
@@ -47,7 +53,9 @@ def upload_sample(host, port, path):
 
             send_user_data(conn, raw_data)
 
-            #send_snapshot(conn, raw_data)
+            while 1:
+                if send_snapshot(conn, raw_data) == False:
+                    break
 
             
     print("done")
