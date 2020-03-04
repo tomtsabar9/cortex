@@ -2,7 +2,9 @@ from .. import Connection
 import socket
 
 class Listener:
-
+    """
+    TODO make doc
+    """
     def __init__(self, host = "0.0.0.0", port=8000, backlog = 1000, reuseaddr = True):
         self.port = port
         self.host = host

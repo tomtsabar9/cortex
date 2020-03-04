@@ -2,7 +2,9 @@ import socket
 import struct
 
 class Connection:
-
+    """
+    TODO doc
+    """
     def __init__(self, socket):
         self.socket = socket
     def __enter__(self):
