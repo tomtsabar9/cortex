@@ -4,8 +4,9 @@
 
 Final project in "Advanced System Design" course.
 
-You are welcome to follow my progress on Trello https://trello.com/b/7jks3j5q/cortex
-See documentation in https://cortex-project.readthedocs.io/en/latest/
+You are welcome to follow my progress on Trello https://trello.com/b/7jks3j5q/cortex.
+
+See documentation in https://cortex-project.readthedocs.io/en/latest/.
 
 
 
