@@ -42,10 +42,12 @@ def send_snapshot(conn, data_stream, formating):
     """
     stub for readibilty and future differences between send_user_data and send_snapshot
     """
+
     if formating == "proto":
         return send_serialized_data(conn, data_stream, proto_formater)
 
     return send_serialized_data(conn, data_stream, default_formater)
+    
 def getReader(path, encoding):
     if encoding == 'gz':
         return gzip.open(path,'rb')

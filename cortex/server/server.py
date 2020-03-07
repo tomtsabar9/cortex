@@ -2,6 +2,8 @@ import socket
 from datetime import datetime
 import time
 import threading
+import pika
+
 from pathlib import Path
 from .listener import Listener
 
@@ -26,6 +28,8 @@ class Handler(threading.Thread):
             user = UserMsg()
             user.ParseFromString(user_msg_data)
             print (user)
+
+            
             while 1:
                 try:
 
@@ -33,6 +37,16 @@ class Handler(threading.Thread):
                     snapshot_msg_data = connection.receive()
 
                     snapshot.ParseFromString(snapshot_msg_data)
+
+                    credentials = pika.PlainCredentials('guest', 'guest')
+                    pconnection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+                    msgChannel = pconnection.channel()
+                    msgChannel.queue_declare(queue='users')
+                    msgChannel.basic_publish(exchange='',
+                        routing_key='users',
+                        body='Hello World!')
+
+                    pconnection.close()
                     print ("got snap")
                 except Exception as e:
                     print (e)
@@ -49,6 +63,8 @@ def run(host, port):
     server = Listener(host, int(port))
     
     server.start()
+
+    
 
     while (1):  
         client = server.accept()
