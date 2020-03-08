@@ -1,21 +1,17 @@
 import pika
+import click
 
 from .parsers import *
+from .. import MsgQueue
 
-
-def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
-
-def users_cons():
-
-    credentials = pika.PlainCredentials('guest', 'guest')
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
-    msgChannel = connection.channel() 
-    msgChannel.queue_declare(queue='users')
-    msgChannel.basic_consume(queue='users', auto_ack=True, on_message_callback=callback)
-    msgChannel.start_consuming()
-
-
+@click.command()
+@click.option('--name', required=True, help='consumer type')
+@click.option('--queue_url', default='rabbitmq://127.0.0.1:5672/', help='server\'s port')
+def run_parser(name, queue_url):
+    global parsers
+    msgQueue = MsgQueue(queue_url)
+    msgQueue.add_consumer(name, parsers[name])
+    msgQueue.consume()
 
 if __name__ == '__main__':
-    users_cons()
+    run_parser()

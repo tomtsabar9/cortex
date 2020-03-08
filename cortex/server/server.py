@@ -9,6 +9,8 @@ from .listener import Listener
 
 from .. import UserMsg
 from .. import SnapshotMsg
+from .. import MsgQueue
+from .. import parsers
 
 class Handler(threading.Thread):
     """
@@ -21,6 +23,13 @@ class Handler(threading.Thread):
   
         
     def run(self):
+        queue_url = 'rabbitmq://127.0.0.1:5672/'
+        msgQueue = MsgQueue(queue_url)
+        msgQueue.add_exchange('parsers', 'fanout')
+        print (repr(parsers))
+        for key in parsers.keys():
+            msgQueue.bind_exchange('parsers', key)
+            print ("key: ", key)
 
         with self.conn as connection:
             user_msg_data = connection.receive()
@@ -38,23 +47,13 @@ class Handler(threading.Thread):
 
                     snapshot.ParseFromString(snapshot_msg_data)
 
-                    credentials = pika.PlainCredentials('guest', 'guest')
-                    pconnection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
-                    msgChannel = pconnection.channel()
-                    msgChannel.queue_declare(queue='users')
-                    msgChannel.basic_publish(exchange='',
-                        routing_key='users',
-                        body='Hello World!')
 
-                    pconnection.close()
+                    msgQueue.publish(ex_name='parsers',q_name='', msg='Hello World!')
+
                     print ("got snap")
                 except Exception as e:
                     print (e)
                     break
-
-       
-
-
 
 def run(host, port):
     """

@@ -60,7 +60,6 @@ def getReader(path, encoding):
 @click.option('--path', default="sample.mind.gz", help='path to data file')
 @click.option('--encoding', default="gz", help='encoding type')
 @click.option('--formating', default="proto", help='formating type')
-
 def upload_sample(host, port, path, encoding, formating):
     """
     Read raw data zipped flie from <path>.
