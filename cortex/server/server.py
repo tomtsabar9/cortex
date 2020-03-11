@@ -16,25 +16,35 @@ class Handler(threading.Thread):
     Handles client request
     """
 
-    def __init__(self, conn, queue_url):
+    def __init__(self, conn, root, queue_url):
         super().__init__()
         self.conn = conn
+        self.root = Path(root)
         self.msgQueue = MsgQueue(queue_url)
+
+        self.root = self.root / 'cortex data'
+        self.root.mkdir(parents=True, exist_ok=True)
 
         self.msgQueue.add_exchange('parsers', 'fanout')
         for key in parsers.keys():
             self.msgQueue.bind_exchange('parsers', key)
   
         
-    def run(self):
-        
+    def save_user_data(self, user):
+        self.root = self.root / user.user_id
+        self.root.mkdir(parents=True, exist_ok=True)
 
+        self.user_details = self.root / "details.txt"
+        self.user_details.write_bytes(user.)
+
+    def run(self):
         with self.conn as connection:
             user_msg_data = connection.receive()
 
             user = UserMsg()
             user.ParseFromString(user_msg_data)
-            print (user)
+            
+            self.save_user_data(user)
 
             
             while 1:
@@ -44,8 +54,6 @@ class Handler(threading.Thread):
                     snapshot_msg_data = connection.receive()
 
                     snapshot.ParseFromString(snapshot_msg_data)
-
-
                     self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(snapshot.datetime))
 
                     print ("got snap")

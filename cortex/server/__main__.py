@@ -9,12 +9,13 @@ from .listener import Listener
 @click.command()
 @click.option('--host', default="127.0.0.1", help='server\'s ip')
 @click.option('--port', default=8000, help='server\'s port')
-@click.option('--queue_url', default='rabbitmq://127.0.0.1:5672/', help='server\'s port')
-def run(host, port, queue_url):
+@click.option('--queue_url', default='rabbitmq://127.0.0.1:5672/', help='url of the message queue')
+@click.option('--root', default='~', help='root directory for files')
+def run(host, port, queue_url, root):
     """
     Listen to incoming client connections, parse them and prints the msg
     """
-    server = Listener(host, int(port))
+    server = Listener(host, port)
     
     server.start()
 
@@ -22,7 +23,7 @@ def run(host, port, queue_url):
 
     while (1):  
         client = server.accept()
-        handler = Handler(client, queue_url)
+        handler = Handler(client, root, queue_url)
         handler.start()
           
     server.stop()
