@@ -1,3 +1,4 @@
 .env/
 .pytest-cache/
 sample.mind.gz
+data/
