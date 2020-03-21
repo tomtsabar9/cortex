@@ -43,6 +43,10 @@ class Handler(threading.Thread):
         self.user_details = self.root / "details.txt"
         self.user_details.write_bytes(user.SerializeToString())
 
+    def save_data_for_parsers(self, snapshot):
+        for key in parsers.keys():
+            self.save_snapshot_submsg(snapshot, key)
+
     def save_snapshot_submsg(self, snapshot, submsg_type):
         self.submsg_dir = self.root / submsg_type
         self.submsg_dir.mkdir(parents=True, exist_ok=True)
@@ -69,8 +73,9 @@ class Handler(threading.Thread):
 
                     snapshot.ParseFromString(snapshot_msg_data)
 
-                    self.save_snapshot_submsg(snapshot, "pose")
-                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(snapshot.datetime))
+                    self.save_data_for_parsers(snapshot)
+
+                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root)+":"+str(snapshot.datetime))
 
                     print ("got snap")
                 except Exception as e:

@@ -10,6 +10,10 @@ from .. import MsgQueue
 def run_parser(name, queue_url):
     global parsers
     msgQueue = MsgQueue(queue_url)
+
+    #Inject msqQueue
+    parsers["queue"] = msgQueue
+
     msgQueue.add_consumer(name, parsers[name])
     msgQueue.consume()
 

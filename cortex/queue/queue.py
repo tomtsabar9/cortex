@@ -2,7 +2,9 @@ import pika
 from urllib.parse import urlparse
 
 class MsgQueue:
-    def __init__(self, url):
+
+    def url_init(self, url):
+
         purl = urlparse(url)
         self.type = purl.scheme
 
@@ -13,10 +15,27 @@ class MsgQueue:
         else:
             raise NotImplementedError
 
+    def channel_init(self, channel):
+        raise NotImplementedError
+
+    def __init__(self, url = None, channel = None):
+
+        if channel == None:
+            self.url_init(url)
+        else:
+            self.channel_init(channel)
+
     def add_consumer(self, q_name, callback):
         if self.type == "rabbitmq":
             self.msgChannel.queue_declare(queue=q_name)
             self.msgChannel.basic_consume(queue=q_name, on_message_callback=callback)
+        else:
+            raise NotImplementedError
+
+
+    def add_queue(self, q_name):
+        if self.type == "rabbitmq":
+            self.msgChannel.queue_declare(q_name)
         else:
             raise NotImplementedError
 
