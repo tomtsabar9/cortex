@@ -9,4 +9,4 @@ from .protocol import FeelingsMsg
 from .connection import Connection
 from .dummy import DummyStream
 from .dummy import DummyConn
-from .parsers import parsers
+from .parsers import parser_factory

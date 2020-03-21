@@ -1,1 +1,1 @@
-from .parsers import parsers
+from .parsers import parser_factory

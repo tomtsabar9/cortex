@@ -15,7 +15,7 @@ from .. import FeelingsMsg
 
 
 from .. import MsgQueue
-from .. import parsers
+from .. import parser_factory
 
 class Handler(threading.Thread):
     """
@@ -32,7 +32,9 @@ class Handler(threading.Thread):
         self.root.mkdir(parents=True, exist_ok=True)
 
         self.msgQueue.add_exchange('parsers', 'fanout')
-        for key in parsers.keys():
+        self.parsers = parser_factory()
+
+        for key in self.parsers.keys():
             self.msgQueue.bind_exchange('parsers', key)
   
         
@@ -44,7 +46,7 @@ class Handler(threading.Thread):
         self.user_details.write_bytes(user.SerializeToString())
 
     def save_data_for_parsers(self, snapshot):
-        for key in parsers.keys():
+        for key in self.parsers:
             self.save_snapshot_submsg(snapshot, key)
 
     def save_snapshot_submsg(self, snapshot, submsg_type):
