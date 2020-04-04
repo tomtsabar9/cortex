@@ -59,7 +59,7 @@ def parser_factory():
     @parser('color_image')
     def parse_color_image(path, msgQueue):
         
-        msgQueue.add_queue('file_data')
+        msgQueue.add_queue('raw_data')
 
         try:
             color_image = ColorImageMsg()
@@ -72,7 +72,7 @@ def parser_factory():
             path_str = str(path) + '.png'
             image.save(path_str, 'png')
          
-            msgQueue.publish(ex_name='',q_name='file_data', msg=str(path)+":"+path_str)
+            msgQueue.publish(ex_name='',q_name='raw_data', msg=str(path)+":"+path_str)
 
             return True
         except Exception as e:
@@ -81,7 +81,7 @@ def parser_factory():
 
     @parser('depth_image')
     def parse_depth_image(path, msgQueue):
-        msgQueue.add_queue('file_data')
+        msgQueue.add_queue('raw_data')
 
         try:
             depth_image = DepthImageMsg()
@@ -100,7 +100,7 @@ def parser_factory():
             path_str = str(path) + '.png'
             image.save(path_str, 'png')
          
-            msgQueue.publish(ex_name='',q_name='file_data', msg=str(path)+":"+path_str)
+            msgQueue.publish(ex_name='',q_name='raw_data', msg=str(path)+":"+path_str)
 
             return True
         except Exception as e:
