@@ -15,5 +15,11 @@ def get_table(metadata, name):
               db.Column('Uid', db.String(), primary_key=True, nullable=False),
               db.Column('Id', db.BigInteger()),
               db.Column('Date', db.BigInteger()),
+              db.Column('Results', db.String(), nullable=False),
               )
-
+    else:
+        return db.Table(name, metadata,
+              db.Column('Id', db.Integer()),
+              db.Column('Date', db.BigInteger() , nullable=False),
+              db.Column('Data', db.String()),
+              )

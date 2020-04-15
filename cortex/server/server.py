@@ -52,25 +52,34 @@ class Handler(threading.Thread):
 
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='user:'+user_json)
 
-    def save_snapshot_meta(self, user_id, snapshot_date):
+    def save_snapshot_meta(self, user_id, snapshot_date, results):
         snap_json = json.dumps(dict(
                 user_id = user_id,
-                snapshot_date = snapshot_date
+                snapshot_date = snapshot_date,
+                results = results
                 ))
 
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='snapshot:'+snap_json)
 
     def save_data_for_parsers(self, snapshot):
+        succesful_parsers = []
         for key in self.parsers:
-            self.save_snapshot_submsg(snapshot, key)
+            if self.save_snapshot_submsg(snapshot, key):
+                succesful_parsers.append(key)
+
+        return succesful_parsers
 
     def save_snapshot_submsg(self, snapshot, submsg_type):
-        self.submsg_dir = self.root / submsg_type
-        self.submsg_dir.mkdir(parents=True, exist_ok=True)
-      
-        submsg = getattr(snapshot, submsg_type)
-        self.submsg_file = self.submsg_dir / str(snapshot.datetime)
-        self.submsg_file.write_bytes(submsg.SerializeToString())
+        try:
+            self.submsg_dir = self.root / submsg_type
+            self.submsg_dir.mkdir(parents=True, exist_ok=True)
+          
+            submsg = getattr(snapshot, submsg_type)
+            self.submsg_file = self.submsg_dir / str(snapshot.datetime)
+            self.submsg_file.write_bytes(submsg.SerializeToString())
+            return True
+        except:
+            return False
 
     def run(self):
         with self.conn as connection:
@@ -90,11 +99,11 @@ class Handler(threading.Thread):
 
                     snapshot.ParseFromString(snapshot_msg_data)
 
-                    self.save_data_for_parsers(snapshot)
+                    results = self.save_data_for_parsers(snapshot)
 
-                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root)+":"+str(snapshot.datetime))
+                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root.absolute())+":"+str(snapshot.datetime))
 
-                    self.save_snapshot_meta(user.user_id, snapshot.datetime)
+                    self.save_snapshot_meta(user.user_id, snapshot.datetime, results)
 
                     print ("got snap")
                 except Exception as e:

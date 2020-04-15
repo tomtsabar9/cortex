@@ -53,7 +53,7 @@ def saver_factory():
         result = connection.execute(s).fetchone()
   
         if result is None:
-            insert = db.insert(snapshots_table).values(Uid=random_string(), Id=int(snapshot_user['user_id']), Date=int(snapshot_user['snapshot_date'])) 
+            insert = db.insert(snapshots_table).values(Uid=random_string(), Id=int(snapshot_user['user_id']), Date=int(snapshot_user['snapshot_date']), Results=snapshot_user['results'])
             ResultProxy = connection.execute(insert)
         return True
        
@@ -82,11 +82,7 @@ def saver_factory():
         connection = cortex_db.connect()
         metadata = db.MetaData()
 
-        emp = db.Table(parser, metadata,
-              db.Column('Id', db.Integer()),
-              db.Column('Date', db.BigInteger() , nullable=False),
-              db.Column('Data', db.String()),
-              )
+        emp = get_table(metadata, parser)
 
         metadata.create_all(cortex_db)
 
