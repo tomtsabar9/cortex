@@ -3,6 +3,7 @@ from datetime import datetime
 import time
 import threading
 import pika
+import json
 
 from pathlib import Path
 
@@ -42,8 +43,22 @@ class Handler(threading.Thread):
         self.root = self.root / str(user.user_id)
         self.root.mkdir(parents=True, exist_ok=True)
 
-        self.user_details = self.root / "details.txt"
-        self.user_details.write_bytes(user.SerializeToString())
+        user_json = json.dumps(dict(
+                user_id = user.user_id,
+                username = user.username,
+                birthday = user.birthday,
+                gender = user.gender
+                ))
+
+        self.msgQueue.publish(ex_name='',q_name='raw_data', msg='user:'+user_json)
+
+    def save_snapshot_meta(self, user_id, snapshot_date):
+        snap_json = json.dumps(dict(
+                user_id = user_id,
+                snapshot_date = snapshot_date
+                ))
+
+        self.msgQueue.publish(ex_name='',q_name='raw_data', msg='snapshot:'+snap_json)
 
     def save_data_for_parsers(self, snapshot):
         for key in self.parsers:
@@ -78,6 +93,8 @@ class Handler(threading.Thread):
                     self.save_data_for_parsers(snapshot)
 
                     self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root)+":"+str(snapshot.datetime))
+
+                    self.save_snapshot_meta(user.user_id, snapshot.datetime)
 
                     print ("got snap")
                 except Exception as e:

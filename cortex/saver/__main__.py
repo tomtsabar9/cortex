@@ -1,5 +1,6 @@
 import click
 import sqlalchemy as db
+
 import threading
 
 from .. import MsgQueue
@@ -24,7 +25,7 @@ def run_saver(db_url, queue_url):
     savers['db'] = cortex_db
 
 
-    msgQueue.add_consumer('raw_data', savers['raw_data'])
+    msgQueue.add_consumer('raw_data', savers['callback'])
     msgQueue.consume()
        
 
