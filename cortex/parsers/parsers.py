@@ -4,6 +4,8 @@ from PIL import Image
 import struct 
 from functools import reduce
 from .parsers import *
+import matplotlib.pyplot as plt
+import numpy as np
 
 from .. import PoseMsg
 from .. import ColorImageMsg
@@ -88,17 +90,19 @@ def parser_factory():
             depth_image.ParseFromString(path.read_bytes())
 
 
-            #Format to byte array as PIL image can eats
+            #Format to byte array as np image can eats
+
             special_prefix_array = [bytearray()]
             special_prefix_array.extend(depth_image.data)
-            data_bytearray = bytes(reduce(lambda a, x: a + bytearray(struct.pack("f", x)), special_prefix_array))
-
-            image = Image.frombytes("I", (depth_image.width, depth_image.height), data_bytearray, 'raw')
+            data_bytearray = bytes(reduce(lambda a, x: a + bytearray(struct.pack("d", x)), special_prefix_array))
+            a = np.frombuffer(data_bytearray).reshape((depth_image.height, depth_image.width))
+            plt.imshow(a, cmap='binary', interpolation='nearest')
+            #image = Image.frombytes("I", (depth_image.width, depth_image.height), data_bytearray, 'raw')
 
             path.unlink()
             
             path_str = str(path) + '.png'
-            image.save(path_str, 'png')
+            plt.savefig( path_str) 
          
             msgQueue.publish(ex_name='',q_name='raw_data', msg=str(path)+":"+path_str)
 
@@ -108,7 +112,7 @@ def parser_factory():
             return False
 
     @parser('feelings')
-    def parse_color_image(path, msgQueue):
+    def parse_feelings(path, msgQueue):
 
         msgQueue.add_queue('raw_data')
 

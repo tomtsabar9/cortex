@@ -7,6 +7,7 @@ from .. import get_table
 
 from pathlib import Path
 import flask
+from flask_cors import cross_origin
 
 
 
@@ -75,6 +76,7 @@ def create_api(db_url):
         return json.dumps(snap_json)
 
     @app.route('/users/<user_id>/snapshots/<snapshot_uid>/<result>', methods=['GET'])
+    @cross_origin(origin='*')
     def get_result(user_id, snapshot_uid, result):
         connection = cortex_db.connect()
         metadata = db.MetaData()

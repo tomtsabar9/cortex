@@ -20,10 +20,21 @@
     {
         document.getElementById("color_image").src = all_snapshots[snapshot_number]['color_image']+'/data';
         document.getElementById("depth_image").src = all_snapshots[snapshot_number]['depth_image']+'/data';
-        document.getElementById("hunger").text = all_snapshots[snapshot_number]['hunger'];
-        document.getElementById("thirst").text = all_snapshots[snapshot_number]['thirst'];
-        document.getElementById("exhaustion").text = all_snapshots[snapshot_number]['exhaustion'];
-        document.getElementById("happines").text = all_snapshots[snapshot_number]['happines'];
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response_json = JSON.parse(this.responseText)
+                document.getElementById("hunger").innerHTML = response_json.hunger
+                document.getElementById("thirst").innerHTML = response_json.thirst
+                document.getElementById("exhaustion").innerHTML = response_json.exhaustion
+                document.getElementById("happiness").innerHTML = response_json.happiness
+            }
+        };
+        xhttp.open("GET", all_snapshots[snapshot_number].feelings, true);
+        xhttp.send();
+
+        
     }
     function next() {
         snapshot_number+=1
@@ -50,33 +61,31 @@
 {% endblock %}
 
 
-    
-
-
-
 {% block content %}
 
       <header>
-        <div>
+        <section class="wrapper style1">
+        <div class="inner">
+   
           <img id="color_image" class="result-image" />
           <img id="depth_image" class="result-image" />
-          <div>
-          <label text="Hunger:" />
-          <textbox id="hunger" />
-          </div>
-          <div>
-          <label text="Thirst:" />
-          <textbox id="thirst" />
-          </div>
-          <div>
-          <label text="Exhaustion:" />
-          <textbox id="exhaustion" />
-          </div>
-          <div>
-          <label text="Happines:" />
-          <textbox id="happines" />
-          </div>
+        
+          <label>Hunger:</label>
+          <textbox id="hunger"></textbox>
+       
+          <label>Thirst:</label>
+          <textbox id="thirst"></textbox>
+        
+         
+          <label>Exhaustion:</label>
+          <textbox id="exhaustion"></textbox>
+         
+          <label>Happiness:</label>
+          <textbox id="happiness"></textbox>
+          
         </div>
+    </section>
+
       </header>
       
       <button type="button" style="height:40px;width:40px" onclick="back()" > &lt; </button>

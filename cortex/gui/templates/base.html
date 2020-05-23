@@ -1,6 +1,8 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} - Flaskr</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='cortex.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 <nav>
   <h1>Flaskr</h1>
 </nav>
@@ -8,5 +10,14 @@
   <header>
     {% block header %}{% endblock %}
   </header>
+  <header id="header" class="alt">
+        <div class="logo"><a href="users.html">Cortex <span>by Tom Tsabar</span></a></div>
+        <a href="#menu">Menu</a>
+  </header>
+  <nav id="menu">
+        <ul class="links">
+          <li><a href="users.html">Home</a></li>
+        </ul>
+  </nav>
   {% block content %}{% endblock %}
 </section>
