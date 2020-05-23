@@ -56,7 +56,7 @@ class Handler(threading.Thread):
         snap_json = json.dumps(dict(
                 user_id = user_id,
                 snapshot_date = snapshot_date,
-                results = results
+                results = json.dumps(results)
                 ))
 
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='snapshot:'+snap_json)

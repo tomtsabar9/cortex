@@ -66,7 +66,13 @@ def create_api(db_url):
 
         snapshot = connection.execute(s).fetchall()[0]
 
-        return json.dumps([snapshot[0], snapshot[2], snapshot[3]])
+        print (snapshot[3])
+        snap_json = dict()
+        snap_json['id'] = snapshot[0]
+        snap_json['time'] = snapshot[2]
+        snap_json['options'] = json.loads(snapshot[3])
+
+        return json.dumps(snap_json)
 
     @app.route('/users/<user_id>/snapshots/<snapshot_uid>/<result>', methods=['GET'])
     def get_result(user_id, snapshot_uid, result):

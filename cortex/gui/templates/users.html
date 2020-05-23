@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Users{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+{% for user in users %}
+      <header>
+        <div>
+          <h1> <a href={{url_for('show', user_id=user[0], user_name=user[1]) | safe}}>{{ user[1] }}</a></h1>
+        </div>
+      </header>
+  {% endfor %}
+{% endblock %}

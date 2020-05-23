@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Journey of {{user_name}}{% endblock %}</h1>
+
+  <script>
+    function getAllSnaps()
+    {
+        return JSON.parse({{ snapshots | tojson }})
+    }
+
+  </script>
+  <script >
+  // load the objects like you would with a normal jinja template i.e. {{ object }}, but add | tojson
+  // pass it into the parse function
+    snapshot_number=0
+    all_snapshots = getAllSnaps()
+
+    function update()
+    {
+        document.getElementById("color_image").src = all_snapshots[snapshot_number]['color_image']+'/data';
+        document.getElementById("depth_image").src = all_snapshots[snapshot_number]['depth_image']+'/data';
+        document.getElementById("hunger").text = all_snapshots[snapshot_number]['hunger'];
+        document.getElementById("thirst").text = all_snapshots[snapshot_number]['thirst'];
+        document.getElementById("exhaustion").text = all_snapshots[snapshot_number]['exhaustion'];
+        document.getElementById("happines").text = all_snapshots[snapshot_number]['happines'];
+    }
+    function next() {
+        snapshot_number+=1
+        if (snapshot_number>=all_snapshots.length)
+        {
+            snapshot_number = all_snapshots.length
+        }
+        update()
+    }
+
+    function back() {
+        snapshot_number-=1
+        if (snapshot_number<=0)
+        {
+            snapshot_number = 0
+        }
+        update()
+    }
+        
+
+
+    </script>
+
+{% endblock %}
+
+
+    
+
+
+
+{% block content %}
+
+      <header>
+        <div>
+          <img id="color_image" class="result-image" />
+          <img id="depth_image" class="result-image" />
+          <div>
+          <label text="Hunger:" />
+          <textbox id="hunger" />
+          </div>
+          <div>
+          <label text="Thirst:" />
+          <textbox id="thirst" />
+          </div>
+          <div>
+          <label text="Exhaustion:" />
+          <textbox id="exhaustion" />
+          </div>
+          <div>
+          <label text="Happines:" />
+          <textbox id="happines" />
+          </div>
+        </div>
+      </header>
+      
+      <button type="button" style="height:40px;width:40px" onclick="back()" > &lt; </button>
+        ---
+      <button type="button" style="height:40px;width:40px" onclick="next()" > &gt; </button>
+       
+    
+ 
+{% endblock %}
