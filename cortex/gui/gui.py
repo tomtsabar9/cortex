@@ -51,6 +51,7 @@ def create_gui(api_host, api_port):
             for option in options:
                 snapt_dict[option] = url+'/users/'+user_id+'/snapshots/'+snapshot[0]+"/"+option
 
+
             snapshots_full_data.append(snapt_dict)
 
             

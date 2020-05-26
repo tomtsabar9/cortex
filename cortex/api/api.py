@@ -93,14 +93,15 @@ def create_api(db_url):
 
         data = connection.execute(s).fetchall()[0][2]
 
-        return data
+        return str(data)
 
     @app.route('/users/<user_id>/snapshots/<snapshot_uid>/<result>/data', methods=['GET'])
     def get_result_data(user_id, snapshot_uid, result):
         
-        path = Path(get_result(user_id, snapshot_uid, result))
-
-        print (path.parent, path.name)
+        temp = get_result(user_id, snapshot_uid, result)
+        path = Path(temp.response[0].decode('ascii'))
+       
+        print (path.parent,path.name)
         return flask.send_from_directory(directory=path.parent, filename=path.name)
 
     return app

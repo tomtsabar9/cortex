@@ -50,6 +50,7 @@ class Handler(threading.Thread):
                 gender = user.gender
                 ))
 
+        print (user_json)
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='user:'+user_json)
 
     def save_snapshot_meta(self, user_id, snapshot_date, results):
