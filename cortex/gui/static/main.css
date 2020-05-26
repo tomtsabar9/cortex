@@ -1567,9 +1567,6 @@
 
 	}
 
-	body {
-		background: #fff;
-	}
 
 		body.is-loading *, body.is-loading *:before, body.is-loading *:after {
 			-moz-animation: none !important;
@@ -1581,13 +1578,6 @@
 			-ms-transition: none !important;
 			transition: none !important;
 		}
-
-/* Type */
-
-	body {
-		background-color: #fff;
-		color: #999999;
-	}
 
 	body, input, select, textarea {
 		font-family: "Scope One", serif;
