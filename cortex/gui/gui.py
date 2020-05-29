@@ -19,8 +19,8 @@ def create_gui(api_host, api_port):
     """
     Return an flask application that represents the website.
     The website holds two interactive pages:
-        Home: view all the users
-        Show: view interactivly all the snapshots of some user
+        Home: view all the users.
+        Show: view interactivly all the snapshots of some user.
     """
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config["DEBUG"] = True
@@ -29,6 +29,9 @@ def create_gui(api_host, api_port):
 
     @app.route('/', methods=['GET'])
     def welcome():
+        """
+        The defaults view of the website: list all avialible users
+        """
         r = requests.get(url+'/users')
 
 
@@ -37,6 +40,9 @@ def create_gui(api_host, api_port):
 
     @app.route('/show/<user_id>', methods=['GET'])
     def show(user_id):
+        """
+        Shows nice graphs and yo
+        """
         r = requests.get(url+'/users/'+user_id+'/snapshots')
 
         

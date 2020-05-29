@@ -1,5 +1,5 @@
 class Snapshot:
-    """Snapt apt apt"""
+    """Data strcture reperesting a snapshot"""
 
     def __init__(self, time):
         self.time = time

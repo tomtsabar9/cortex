@@ -12,7 +12,10 @@ from .. import random_string
 
 
 def saver_factory():
-
+    """
+    Packs all type savers in single dictionary
+    TODO - change to more beutifull way
+    """
     savers = dict()
 
   

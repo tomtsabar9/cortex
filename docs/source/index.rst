@@ -10,20 +10,49 @@ Welcome to cortex's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-.. autofunction:: cortex.api.api.create_api
-    :members:
-
-.. automodule:: cortex.client
-    :members:
-
 .. automodule:: cortex.gui.gui
     :members:
 
-.. autoclass:: cortex.connection.Connection
+.. automodule:: cortex.api.api
     :members:
 
-.. autoclass:: cortex.server.Listener
+.. automodule:: cortex.cli.__main__
     :members:
+
+.. automodule:: cortex.client.__main__
+    :members:
+
+.. automodule:: cortex.connection.connection
+    :members:
+
+.. automodule:: cortex.parsers.parsers
+    :members:
+
+.. automodule:: cortex.queue.queue
+    :members:
+
+.. automodule:: cortex.reader.formats
+    :members:
+
+.. automodule:: cortex.reader.snapshots
+    :members:
+
+.. automodule:: cortex.saver.saver
+    :members:
+
+.. automodule:: cortex.server.listener
+    :members:
+
+.. automodule:: cortex.server.server
+    :members:
+
+.. automodule:: cortex.utils.random
+    :members:
+
+.. automodule:: cortex.utils.tables
+    :members:
+
+
 
 Indices and tables
 ==================

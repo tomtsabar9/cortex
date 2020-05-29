@@ -3,7 +3,7 @@ import struct
 
 class Connection:
     """
-    TODO doc
+    Wraps socket usage with continious receive.
     """
     def __init__(self, socket):
         self.socket = socket
@@ -16,6 +16,9 @@ class Connection:
         return self.socket.send(struct.pack('<I', len(data)) + data)
 
     def receive(self):
+        """
+        Keep recieving information until gets <size> data
+        """
         data = b''
         size = struct.unpack('<I', self.socket.recv(4))[0]   
        

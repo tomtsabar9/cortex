@@ -20,7 +20,7 @@ from .. import parser_factory
 
 class Handler(threading.Thread):
     """
-    Handles client request
+    Handles client requests, parsing each request and passing information to the right queues.
     """
 
     def __init__(self, conn, root, queue_url):

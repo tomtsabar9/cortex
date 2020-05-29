@@ -2,7 +2,10 @@ import pika
 from urllib.parse import urlparse
 
 class MsgQueue:
-
+    """
+    Wraps general queue:
+        Currently implenting support only in rabbitmq
+    """
     def url_init(self, url):
 
         purl = urlparse(url)

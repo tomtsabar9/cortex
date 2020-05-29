@@ -2,7 +2,9 @@ import struct
 
 
 class Fmt:
-
+    """
+    Maps between low-level entities to their related property
+    """
     ID = '<Q'
     NAME_LENGTH = '<I'
     BIRTH = 'I'
@@ -24,6 +26,9 @@ class Fmt:
 
 class Unpack:
 
+    """
+    Unpacks accrording to Fmt mapping the data from the samples
+    """
     def __init__(self, data):
         self.data = data
 
@@ -46,9 +51,6 @@ class Unpack:
     def gender(self):
         char_gender = struct.unpack(Fmt.GENDER, self.data.read(1))[0]
         gender = char_gender.decode("utf-8")
-        #gender = gender.replace('m', 'male')
-        #gender = gender.replace('f', 'female')
-        #gender = gender.replace('o', 'other')
         return gender
 
     def time(self):

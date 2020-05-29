@@ -13,8 +13,8 @@ from flask_cors import cross_origin
 
 def create_api(db_url):
     """
-    Returns an flask appication the runs the GUI.
-    Holds to
+    Returns an flask appication the runs the api.
+    The api reads directly from the database, parses the data serves it to the clinet, 
     """
     app = flask.Flask(__name__)
     app.config["DEBUG"] = True
@@ -23,6 +23,9 @@ def create_api(db_url):
 
     @app.route('/users', methods=['GET'])
     def users():
+        """
+        Returns json of all the clients with their ids.
+        """
         connection = cortex_db.connect()
         metadata = db.MetaData()
 
@@ -37,6 +40,9 @@ def create_api(db_url):
 
     @app.route('/users/<user_id>', methods=['GET'])
     def user(user_id):
+        """
+        Returns json of all the details specific user.
+        """
         connection = cortex_db.connect()
         metadata = db.MetaData()
         users_table = get_table(metadata, 'users')
@@ -47,6 +53,9 @@ def create_api(db_url):
 
     @app.route('/users/<user_id>/snapshots', methods=['GET'])
     def snapshots(user_id):
+        """
+        Returns json of all the snapshots of specific user.
+        """
         connection = cortex_db.connect()
         metadata = db.MetaData()
         snapshots_table = get_table(metadata, 'snapshots')
@@ -62,6 +71,9 @@ def create_api(db_url):
 
     @app.route('/users/<user_id>/snapshots/<snapshot_uid>', methods=['GET'])
     def snapshot(user_id, snapshot_uid):
+        """
+        Returns json of all the results exists in a single snapshot.
+        """
         connection = cortex_db.connect()
         metadata = db.MetaData()
         snapshots_table = get_table(metadata, 'snapshots')
@@ -82,6 +94,9 @@ def create_api(db_url):
     @app.route('/users/<user_id>/snapshots/<snapshot_uid>/<result>', methods=['GET'])
     @cross_origin(origin='*')
     def get_result(user_id, snapshot_uid, result):
+        """
+        Returns json of a single results within a snapshot.
+        """
         connection = cortex_db.connect()
         metadata = db.MetaData()
 
@@ -101,7 +116,9 @@ def create_api(db_url):
 
     @app.route('/users/<user_id>/snapshots/<snapshot_uid>/<result>/data', methods=['GET'])
     def get_result_data(user_id, snapshot_uid, result):
-        
+        """
+        Returns an actual image (instead of a path).
+        """
         temp = get_result(user_id, snapshot_uid, result)
         path = Path(temp.response[0].decode('ascii'))
        

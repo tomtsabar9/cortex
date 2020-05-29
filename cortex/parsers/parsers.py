@@ -15,6 +15,10 @@ from .. import MsgQueue
 
 
 def parser_factory():
+    """
+    Returns a dictionary with all the pasrers. 
+    Uses decoration in order create appropriate from simpler functions/ 
+    """
     parsers = dict()
 
     def parser(name):

@@ -2,7 +2,9 @@ import sqlalchemy as db
 
 
 def get_table(metadata, name):
-
+  """
+  Wraps usage of database tables so they can be managed from one place.
+  """
     if name == "users":
         return db.Table('users', metadata,
               db.Column('Id', db.BigInteger(), primary_key=True),
