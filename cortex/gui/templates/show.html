@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-
+{% block name %}- Journey of {{user_name}}{% endblock %}
 {% block header %}
-  <h1>{% block title %}Journey of {{user_name}}{% endblock %}</h1>
 
   <script>
     function getAllSnaps()
@@ -23,8 +22,6 @@
     function drawPlot(x, y, z)
     {
       
-    
-        
         console.log([x.toString()])
         var trace_current = {
           x:[x.toString()], y: [z.toString()],
@@ -42,13 +39,16 @@
           type: 'scatter'
         };
 
+        var layout = {
+        title:'Position:'
+      };
 
         traces = [trace_current, trace_previous]
 
 
         var data = traces;
 
-        Plotly.newPlot('myDiv', data);
+        Plotly.newPlot('myDiv', data, layout);
 
         previous_x.push(x.toString())
         previous_z.push(z.toString())
@@ -81,6 +81,19 @@
                 px = response_json.px
                 py = response_json.py
                 pz = response_json.pz
+                rx = response_json.rx
+                ry = response_json.ry
+                rz = response_json.rz
+                rw = response_json.rw
+
+                document.getElementById("px").innerHTML = px
+                document.getElementById("py").innerHTML = py
+                document.getElementById("pz").innerHTML = pz
+                document.getElementById("rx").innerHTML = rx
+                document.getElementById("ry").innerHTML = ry
+                document.getElementById("rz").innerHTML = rz
+                document.getElementById("rw").innerHTML = rw
+          
                 drawPlot(px, py, pz)
             }
         };
@@ -117,36 +130,82 @@
 
 {% block content %}
 
-      <header>
-        <section class="wrapper style1">
-        <div class="inner">
-   
-          <img id="color_image" class="result-image" />
-          <img id="depth_image" class="result-image" />
-          <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
-        
-          <label>Hunger:</label>
-          <textbox id="hunger"></textbox>
-       
-          <label>Thirst:</label>
-          <textbox id="thirst"></textbox>
-        
-         
-          <label>Exhaustion:</label>
-          <textbox id="exhaustion"></textbox>
-         
-          <label>Happiness:</label>
-          <textbox id="happiness"></textbox>
-          
-        </div>
-    </section>
+          <div class="row">
+            <div class="column" style="max-width: 100%">
+              <button type="button" onclick="back()" class="data-buttons "> previous </button>
+              <button type="button" class="data-buttons " > play </button>
+              <button type="button" onclick="next()" class="data-buttons " > next </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <img id="color_image" class="result-image" />
+            </div>
+            <div class="column">
+             <img id="depth_image" class="result-image" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+            </div>
+            <div class="column">
+              <div class="row">
+                  <h4> Feelings: </h4>
+              </div>
+                  <div class="row">
+                    <label>Hunger:</label>
+                    <textbox id="hunger"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>Thirst:</label>
+                    <textbox id="thirst"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>Exhaustion:</label>
+                    <textbox id="exhaustion"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>Happiness:</label>
+                    <textbox id="happiness"></textbox>
+                  </div>
 
-      </header>
-      
-      <button type="button" style="height:40px;width:40px" onclick="back()" > &lt; </button>
-        ---
-      <button type="button" style="height:40px;width:40px" onclick="next()" > &gt; </button>
-       
-    
- 
+              <div class="row">
+                  <h4> Position: </h4>
+              </div>
+                  <div class="row">
+                    <label>X:</label>
+                    <textbox id="px"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>Y:</label>
+                    <textbox id="py"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>X:</label>
+                    <textbox id="pz"></textbox>
+                  </div>
+            
+              
+              <div class="row">
+                  <h4> Rotation: </h4>
+              </div>
+                  <div class="row">
+                    <label>X:</label>
+                    <textbox id="rx"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>Y:</label>
+                    <textbox id="ry"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>Z:</label>
+                    <textbox id="rz"></textbox>
+                  </div>
+                  <div class="row">
+                    <label>W:</label>
+                    <textbox id="rw"></textbox>
+                  </div>
+            </div>
+            </div>
 {% endblock %}

@@ -296,8 +296,3 @@ img.dw-flp__pnl {
     opacity: 1;
   }
 }
-.result-image {
-    max-width:50%;
-    max-height:50%;
-    vertical-align: middle;
-}

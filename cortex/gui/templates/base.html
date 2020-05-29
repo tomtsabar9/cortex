@@ -1,5 +1,4 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} </title>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
@@ -8,6 +7,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='slick-theme.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='templatemo-new-vision.css') }}">
+{% block header %}{% endblock %}
 
 </head>
 <section class="content">
@@ -17,7 +17,7 @@
               <div class="row">
                   <div class="col-12 tm-site-header-col">
                     <div class="tm-site-header-right">
-                          <h1 class="tm-site-name">Cortex</h1>
+                          <h1 class="tm-site-name">Cortex {% block name %}{% endblock %}</h1>
                       </div>
                       <div class="tm-site-header-left tm-menu-container-outer">
                           
