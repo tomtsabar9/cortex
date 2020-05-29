@@ -16,6 +16,9 @@ Welcome to cortex's documentation!
 .. automodule:: cortex.client
     :members:
 
+.. automodule:: cortex.gui.gui
+    :members:
+
 .. autoclass:: cortex.connection.Connection
     :members:
 
