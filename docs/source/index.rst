@@ -10,6 +10,12 @@ Welcome to cortex's documentation!
    :maxdepth: 3
    :caption: Contents:
 
+.. autofunction:: cortex.api.api.create_api
+    :members:
+
+.. automodule:: cortex.client
+    :members:
+
 .. autoclass:: cortex.connection.Connection
     :members:
 
