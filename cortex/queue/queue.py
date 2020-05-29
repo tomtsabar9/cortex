@@ -12,9 +12,11 @@ class MsgQueue:
         self.type = purl.scheme
 
         if self.type == "rabbitmq":
-            credentials = pika.PlainCredentials('guest', 'guest')
+            credentials = pika.PlainCredentials('tomtsabar9@gmail.com', 'mysecretpassword')
             connection = pika.BlockingConnection(pika.ConnectionParameters(purl.hostname, purl.port, purl.path, credentials))
             self.msgChannel = connection.channel() 
+        elif self.type == "dummy":
+            pass
         else:
             raise NotImplementedError
 
@@ -32,6 +34,8 @@ class MsgQueue:
         if self.type == "rabbitmq":
             self.msgChannel.queue_declare(queue=q_name)
             self.msgChannel.basic_consume(queue=q_name, on_message_callback=callback)
+        elif self.type == "dummy":
+            pass
         else:
             raise NotImplementedError
 
@@ -39,12 +43,16 @@ class MsgQueue:
     def add_queue(self, q_name):
         if self.type == "rabbitmq":
             self.msgChannel.queue_declare(q_name)
+        elif self.type == "dummy":
+            pass
         else:
             raise NotImplementedError
 
     def add_exchange(self, ex_name, ex_type):
         if self.type == "rabbitmq":
             self.msgChannel.exchange_declare(exchange=ex_name, exchange_type=ex_type)
+        elif self.type == "dummy":
+            pass
         else:
             raise NotImplementedError
 
@@ -52,17 +60,23 @@ class MsgQueue:
         if self.type == "rabbitmq":
             self.msgChannel.queue_declare(queue=q_name)
             self.msgChannel.queue_bind(exchange=ex_name,queue=q_name)
+        elif self.type == "dummy":
+            pass
         else:
             raise NotImplementedError
 
     def publish(self, ex_name, q_name, msg):
         if self.type == "rabbitmq":
             self.msgChannel.basic_publish(exchange=ex_name, routing_key=q_name, body=msg)
+        elif self.type == "dummy":
+            pass
         else:
             raise NotImplementedError
         
     def consume(self):
         if self.type == "rabbitmq":
             self.msgChannel.start_consuming()
+        elif self.type == "dummy":
+            pass
         else:
             raise NotImplementedError

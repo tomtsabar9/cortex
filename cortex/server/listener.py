@@ -3,7 +3,7 @@ import socket
 
 class Listener:
     """
-    TODO make doc
+    Wraps server basic behavior
     """
     def __init__(self, host = "0.0.0.0", port=8000, backlog = 1000, reuseaddr = True):
         self.port = port

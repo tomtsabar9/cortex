@@ -19,7 +19,7 @@ Welcome to cortex's documentation!
 .. automodule:: cortex.cli.__main__
     :members:
 
-.. automodule:: cortex.client.__main__
+.. automodule:: cortex.client.client
     :members:
 
 .. automodule:: cortex.connection.connection

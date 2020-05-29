@@ -50,7 +50,6 @@ class Handler(threading.Thread):
                 gender = user.gender
                 ))
 
-        print (user_json)
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='user:'+user_json)
 
     def save_snapshot_meta(self, user_id, snapshot_date, results):
@@ -88,7 +87,9 @@ class Handler(threading.Thread):
 
             user = UserMsg()
             user.ParseFromString(user_msg_data)
-            
+            print (repr(user_msg_data))
+            print ('*')
+            print ('*')
             self.save_user_data(user)
 
             
