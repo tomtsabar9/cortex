@@ -12,6 +12,10 @@ from flask_cors import cross_origin
 
 
 def create_api(db_url):
+    """
+    Returns an flask appication the runs the GUI.
+    Holds to
+    """
     app = flask.Flask(__name__)
     app.config["DEBUG"] = True
 

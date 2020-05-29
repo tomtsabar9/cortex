@@ -9,13 +9,19 @@ from flask import (
 
 def run(host, port, api_host, api_port):
     """
-    
+    Runs the flask appication the runs the GUI.
     """
 
     gui = create_gui(api_host, api_port)  
     gui.run(host=host, port=port)
 
 def create_gui(api_host, api_port):
+    """
+    Return an flask application that represents the website.
+    The website holds two interactive pages:
+        Home: view all the users
+        Show: view interactivly all the snapshots of some user
+    """
     app = flask.Flask(__name__, instance_relative_config=True)
     app.config["DEBUG"] = True
     url = 'http://'+api_host+":"+str(api_port)
