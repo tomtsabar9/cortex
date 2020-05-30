@@ -73,8 +73,7 @@ class Handler(threading.Thread):
             for key in self.parsers:
                 self.msgQueue.bind_exchange('parsers', key)
 
-            self.msgQueue.add_exchange('raw_data', 'fanout')
-            self.msgQueue.bind_exchange('raw_data', 'raw_data')
+            self.msgQueue.add_queue('raw_data')
 
         
   
@@ -107,7 +106,7 @@ class Handler(threading.Thread):
                 ))
 
 
-        self.msgQueue.publish(ex_name='raw_data',q_name='raw_data', msg='user:'+user_json)
+        self.msgQueue.publish(ex_name='',q_name='raw_data', msg='user:'+user_json)
 
     def save_snapshot_meta(self, user_id, snapshot_date, results):
         snap_json = json.dumps(dict(
@@ -117,7 +116,7 @@ class Handler(threading.Thread):
                 ))
 
 
-        self.msgQueue.publish(ex_name='raw_data',q_name='raw_data', msg='snapshot:'+snap_json)
+        self.msgQueue.publish(ex_name='',q_name='raw_data', msg='snapshot:'+snap_json)
 
     def save_data_for_parsers(self, snapshot):
         succesful_parsers = []

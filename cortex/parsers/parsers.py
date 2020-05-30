@@ -3,7 +3,6 @@ from pathlib import Path
 from PIL import Image
 import struct 
 from functools import reduce
-from .parsers import *
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -32,6 +31,8 @@ def parser_factory():
                     ch.basic_ack(delivery_tag = method.delivery_tag)
 
             parsers[name] = callback
+            parsers[name+'_orig'] = parse_function
+
         return decorator
         
     @parser('pose')
@@ -53,6 +54,7 @@ def parser_factory():
                 rw = pose.rotation.w
                 ))
          
+            print (str(path)+":"+pose_json)
             msgQueue.publish(ex_name='',q_name='raw_data', msg=str(path)+":"+pose_json)
 
             path.unlink()
@@ -99,8 +101,12 @@ def parser_factory():
             special_prefix_array = [bytearray()]
             special_prefix_array.extend(depth_image.data)
             data_bytearray = bytes(reduce(lambda a, x: a + bytearray(struct.pack("d", x)), special_prefix_array))
-            a = np.frombuffer(data_bytearray).reshape((depth_image.height, depth_image.width))
-            plt.imshow(a, cmap='binary', interpolation='nearest')
+            array_np = np.frombuffer(data_bytearray).reshape((depth_image.height, depth_image.width))
+
+            plt.imshow(array_np, cmap='binary', interpolation='nearest')
+
+            plt.axis('off')
+            plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
             path.unlink()
             

@@ -13,7 +13,7 @@ import pytest
 @pytest.fixture
 def basic_handler(tmp_path):
     conn = DummyConn('')
-    return Handler(conn, tmp_path, "dummy://")
+    return Handler(conn, tmp_path, "dummy://", None)
 
 
 
@@ -26,8 +26,8 @@ def test_save_user_data(basic_handler):
     basic_handler.save_user_data(user)
 
     json_msg = 'user:{"user_id": 42, "username": "Dan Gittik", "birthday": 699746400, "gender": 0}'
-    assert basic_handler.msgQueue.ex_name == ""
-    assert basic_handler.msgQueue.queues["raw_data"] == json_msg
+    assert basic_handler.msgQueue.ex_name == ''
+    assert basic_handler.msgQueue.queues['raw_data'] == json_msg
 
 
 def test_save_snapshot_meta(basic_handler):
@@ -39,8 +39,8 @@ def test_save_snapshot_meta(basic_handler):
     basic_handler.save_snapshot_meta(user_id, snapshot_date, results)
 
     json_msg = 'snapshot:{"user_id": 1337, "snapshot_date": 254724572457, "results": "[\\"yo\\", \\"mo\\", \\"ho\\"]"}'
-    assert basic_handler.msgQueue.ex_name == ""
-    assert basic_handler.msgQueue.queues["raw_data"] == json_msg
+    assert basic_handler.msgQueue.ex_name == ''
+    assert basic_handler.msgQueue.queues['raw_data'] == json_msg
     
 
 def test_save_data_for_parsers(basic_handler):
