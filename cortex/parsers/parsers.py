@@ -148,7 +148,12 @@ def queue_parser_factory(msgQueue):
         try:
             msgQueue.add_queue('raw_data')
 
-            data = path.read_bytes()
+            #If the file is not available continue
+            try:
+                data = path.read_bytes()
+            except Exception as e:
+                return True
+
             result = parse(name, data)
 
             if 'image' in name:
