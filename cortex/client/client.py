@@ -10,6 +10,8 @@ def upload_sample(host, port, path, encoding, formating):
     """
     Read raw data zipped flie from <path>.
     Send user information and snapshots serialized to server
+    Write now only proto_buf formater is supported, it does almost nothing.
+    Future formaters will read the data into proto_buf structure and send it that way.
     """
 
     try:

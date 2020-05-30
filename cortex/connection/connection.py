@@ -20,10 +20,20 @@ class Connection:
         Keep recieving information until gets <size> data
         """
         data = b''
-        size = struct.unpack('<I', self.socket.recv(4))[0]   
-       
-        while (size > 0):
+
+     
+        size = struct.unpack('<I', self.socket.recv(4))[0] 
+ 
+        while (size > 0):   
+
+            
             recv = self.socket.recv(size)
+           
+            #Happens only when the socket is closed
+            if len(recv) == 0:
+                raise socket.error('Socket is closed')
+
+      
             size -= len(recv)
             data += recv
 

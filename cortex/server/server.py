@@ -25,6 +25,7 @@ class Handler(threading.Thread):
 
     def __init__(self, conn, root, queue_url):
         super().__init__()
+        self.stop_event = threading.Event()
         self.conn = conn
         self.root = Path(root)
         self.msgQueue = MsgQueue(queue_url)
@@ -38,6 +39,12 @@ class Handler(threading.Thread):
         for key in self.parsers:
             self.msgQueue.bind_exchange('parsers', key)
   
+    def stop(self):
+        self.stop_event.set()
+
+    def stopped(self):
+        return self.stop_event.is_set()
+
     def get_parsers(self):
         parsers = []
         for item in SnapshotMsg.__dict__.items():
@@ -49,10 +56,6 @@ class Handler(threading.Thread):
             parsers.append (item[0])
         return parsers
 
-
-
-
-        
     def save_user_data(self, user):
         self.root = self.root / str(user.user_id)
         self.root.mkdir(parents=True, exist_ok=True)
@@ -101,32 +104,43 @@ class Handler(threading.Thread):
             return False
 
     def run(self):
-        try:
-            with self.conn as connection:
-                user_msg_data = connection.receive()
 
-                user = UserMsg()
-                user.ParseFromString(user_msg_data)
+        with self.conn as connection:
+            user_msg_data = connection.receive()
 
-                self.save_user_data(user)
+            user = UserMsg()
+            user.ParseFromString(user_msg_data)
+
+            if self.stopped():
+                return
+            self.save_user_data(user)
 
                 
-                while 1:
+            while 1:
 
+                try:
                     snapshot = SnapshotMsg()
-                    snapshot_msg_data = connection.receive()
-
-                    snapshot.ParseFromString(snapshot_msg_data)
-
-                    results = self.save_data_for_parsers(snapshot)
-
-                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root.absolute())+":"+str(snapshot.datetime))
-
-                    self.save_snapshot_meta(user.user_id, snapshot.datetime, results)
-
-                    print ("got a snapshot")
                     
-        except Exception as e:
-            print (e)
+                    if self.stopped():
+                        return
+
+                    print ("1")
+                    snapshot_msg_data = connection.receive()
+                    print ("2")
+                    snapshot.ParseFromString(snapshot_msg_data)
+                    print ("3")
+                    results = self.save_data_for_parsers(snapshot)
+                    print ("4")
+                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root.absolute())+":"+str(snapshot.datetime))
+                    print ("5")
+                    self.save_snapshot_meta(user.user_id, snapshot.datetime, results)
+                    print ("6")
+                    print ("got a snapshot")
+                except :
+                    print ("client disconnected")
+                    return
+
+                    
+
 
 

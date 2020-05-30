@@ -10,6 +10,5 @@ from .connection import Connection
 from .dummy import DummyStream
 from .dummy import DummyConn
 from .dummy import DummyQueue
-from .parsers import parser_factory
 from .utils import get_table
 from .utils import random_string

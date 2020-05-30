@@ -4,6 +4,17 @@ import click
 from pathlib import Path
 from .server import Handler
 from .listener import Listener
+import signal
+
+handlers = []
+
+def signal_handler(sig, frame):
+    print('Exiting...')
+    for hanlder in handlers:
+        hanlder.stop() 
+        hanlder.join() 
+    print('Finished')
+    sys.exit(0)
 
 
 @click.command()
@@ -15,16 +26,24 @@ def run(host, port, queue_url, root):
     """
     Listen to incoming client connections, parse them and prints the msg
     """
+    signal.signal(signal.SIGINT, signal_handler)
+
     server = Listener(host, port)
     
     server.start()
 
-    
-
     while (1):  
-        client = server.accept()
-        handler = Handler(client, root, queue_url)
-        handler.start()
+
+        try:
+            client = server.accept()
+            handler = Handler(client, root, queue_url)
+            print ("client connected")
+            handler.start()
+            handlers.append(handler)
+        except Exception as e:
+            print (e)
+            break
+
           
     server.stop()
 
