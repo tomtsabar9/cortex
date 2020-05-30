@@ -32,48 +32,51 @@ def run_server(host, port, queue_url='rabbitmq://127.0.0.1:5672/', root='data',h
         try:
             client = server.accept()
 
-            if publish == None:
-                handler = Handler(client, root, queue_url)
-                print ("client connected")
-                handler.start()
-                handlers.append(handler)
-
-            else:
-                # Direct publishing for user defined publish function
-                with client as connection:
-                    while 1:
-                        try:
-                            data = connection.receive()
-                            publish(data)
-          
-                        except Exception as e:
-                            print (e)
-                            break
+            handler = Handler(client, root, queue_url, publish)
+            print ("client connected")
+            handler.start()
+            handlers.append(handler)
 
         except Exception as e:
             print (e)
             break
+class OuterQueue:
+    def __init__(self, publish_func):
+        self.publish_func = publish_func
+
+    def publish(self, *args, **kwargs):
+        self.publish_func((args,kwargs))
+
 
 class Handler(threading.Thread):
     """
     Handles client requests, parsing each request and passing information to the right queues.
     """
 
-    def __init__(self, conn, root, queue_url):
+    def __init__(self, conn, root, queue_url, publish):
         super().__init__()
         self.stop_event = threading.Event()
+
         self.conn = conn
         self.root = Path(root)
-        self.msgQueue = MsgQueue(queue_url)
-
+    
         self.root = self.root / 'cortex data'
         self.root.mkdir(parents=True, exist_ok=True)
 
-        self.msgQueue.add_exchange('parsers', 'fanout')
         self.parsers = self.get_parsers()
 
-        for key in self.parsers:
-            self.msgQueue.bind_exchange('parsers', key)
+        if publish != None:
+            self.msgQueue = OuterQueue(publish)
+        else:
+            self.msgQueue = MsgQueue(queue_url)
+            self.msgQueue.add_exchange('parsers', 'fanout')
+            for key in self.parsers:
+                self.msgQueue.bind_exchange('parsers', key)
+
+            self.msgQueue.add_exchange('raw_data', 'fanout')
+            self.msgQueue.bind_exchange('raw_data', 'raw_data')
+
+        
   
     def stop(self):
         self.stop_event.set()
@@ -103,7 +106,8 @@ class Handler(threading.Thread):
                 gender = user.gender
                 ))
 
-        self.msgQueue.publish(ex_name='',q_name='raw_data', msg='user:'+user_json)
+
+        self.msgQueue.publish(ex_name='raw_data',q_name='raw_data', msg='user:'+user_json)
 
     def save_snapshot_meta(self, user_id, snapshot_date, results):
         snap_json = json.dumps(dict(
@@ -113,7 +117,7 @@ class Handler(threading.Thread):
                 ))
 
 
-        self.msgQueue.publish(ex_name='',q_name='raw_data', msg='snapshot:'+snap_json)
+        self.msgQueue.publish(ex_name='raw_data',q_name='raw_data', msg='snapshot:'+snap_json)
 
     def save_data_for_parsers(self, snapshot):
         succesful_parsers = []
