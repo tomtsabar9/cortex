@@ -1,4 +1,0 @@
-<rabbit mq>
-sudo docker run -p 127.0.0.1:5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres (name postgres)
-docker pull dpage/pgadmin4
-docker run -p 80:80 -e 'PGADMIN_DEFAULT_EMAIL=tomtsabar9@gmail.com' -e 'PGADMIN_DEFAULT_PASSWORD=mysecretpassword' -d dpage/pgadmin4

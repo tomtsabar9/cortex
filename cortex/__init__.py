@@ -6,6 +6,7 @@ from .protocol import ColorImageMsg
 from .protocol import DepthImageMsg
 from .protocol import FeelingsMsg
 
+
 from .connection import Connection
 from .dummy import DummyStream
 from .dummy import DummyConn
