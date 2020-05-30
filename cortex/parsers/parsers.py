@@ -101,7 +101,6 @@ def parser_factory():
             data_bytearray = bytes(reduce(lambda a, x: a + bytearray(struct.pack("d", x)), special_prefix_array))
             a = np.frombuffer(data_bytearray).reshape((depth_image.height, depth_image.width))
             plt.imshow(a, cmap='binary', interpolation='nearest')
-            #image = Image.frombytes("I", (depth_image.width, depth_image.height), data_bytearray, 'raw')
 
             path.unlink()
             

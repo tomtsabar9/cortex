@@ -16,7 +16,7 @@ from .. import FeelingsMsg
 
 
 from .. import MsgQueue
-from .. import parser_factory
+
 
 class Handler(threading.Thread):
     """
@@ -33,11 +33,25 @@ class Handler(threading.Thread):
         self.root.mkdir(parents=True, exist_ok=True)
 
         self.msgQueue.add_exchange('parsers', 'fanout')
-        self.parsers = parser_factory()
+        self.parsers = self.get_parsers()
 
-        for key in self.parsers.keys():
+        for key in self.parsers:
             self.msgQueue.bind_exchange('parsers', key)
   
+    def get_parsers(self):
+        parsers = []
+        for item in SnapshotMsg.__dict__.items():
+            if not 'FieldProperty' in str(type(item[1])):
+                continue
+            if 'datetime' in item[0]:
+                continue
+
+            parsers.append (item[0])
+        return parsers
+
+
+
+
         
     def save_user_data(self, user):
         self.root = self.root / str(user.user_id)
@@ -59,6 +73,7 @@ class Handler(threading.Thread):
                 results = json.dumps(results)
                 ))
 
+
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='snapshot:'+snap_json)
 
     def save_data_for_parsers(self, snapshot):
@@ -75,26 +90,28 @@ class Handler(threading.Thread):
             self.submsg_dir.mkdir(parents=True, exist_ok=True)
           
             submsg = getattr(snapshot, submsg_type)
+            if repr(submsg) == "":
+                return False
+
             self.submsg_file = self.submsg_dir / str(snapshot.datetime)
             self.submsg_file.write_bytes(submsg.SerializeToString())
+
             return True
         except:
             return False
 
     def run(self):
-        with self.conn as connection:
-            user_msg_data = connection.receive()
+        try:
+            with self.conn as connection:
+                user_msg_data = connection.receive()
 
-            user = UserMsg()
-            user.ParseFromString(user_msg_data)
-            print (repr(user_msg_data))
-            print ('*')
-            print ('*')
-            self.save_user_data(user)
+                user = UserMsg()
+                user.ParseFromString(user_msg_data)
 
-            
-            while 1:
-                try:
+                self.save_user_data(user)
+
+                
+                while 1:
 
                     snapshot = SnapshotMsg()
                     snapshot_msg_data = connection.receive()
@@ -107,8 +124,9 @@ class Handler(threading.Thread):
 
                     self.save_snapshot_meta(user.user_id, snapshot.datetime, results)
 
-                    print ("got snap")
-                except Exception as e:
-                    print (e)
-                    break
+                    print ("got a snapshot")
+                    
+        except Exception as e:
+            print (e)
+
 
