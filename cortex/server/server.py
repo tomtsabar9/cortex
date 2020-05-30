@@ -14,9 +14,45 @@ from .. import ColorImageMsg
 from .. import DepthImageMsg
 from .. import FeelingsMsg
 
-
 from .. import MsgQueue
 
+from .listener import Listener
+
+def run_server(host, port, queue_url='rabbitmq://127.0.0.1:5672/', root='data',handlers = None, publish = None):
+    """
+    Listen to incoming client connections, parse them and prints the msg
+    """
+
+    server = Listener(host, port)
+    
+    server.start()
+
+    while 1:  
+
+        try:
+            client = server.accept()
+
+            if publish == None:
+                handler = Handler(client, root, queue_url)
+                print ("client connected")
+                handler.start()
+                handlers.append(handler)
+
+            else:
+                # Direct publishing for user defined publish function
+                with client as connection:
+                    while 1:
+                        try:
+                            data = connection.receive()
+                            publish(data)
+          
+                        except Exception as e:
+                            print (e)
+                            break
+
+        except Exception as e:
+            print (e)
+            break
 
 class Handler(threading.Thread):
     """
@@ -124,17 +160,15 @@ class Handler(threading.Thread):
                     if self.stopped():
                         return
 
-                    print ("1")
                     snapshot_msg_data = connection.receive()
-                    print ("2")
                     snapshot.ParseFromString(snapshot_msg_data)
-                    print ("3")
+
                     results = self.save_data_for_parsers(snapshot)
-                    print ("4")
+                    
                     self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root.absolute())+":"+str(snapshot.datetime))
-                    print ("5")
+
                     self.save_snapshot_meta(user.user_id, snapshot.datetime, results)
-                    print ("6")
+
                     print ("got a snapshot")
                 except :
                     print ("client disconnected")

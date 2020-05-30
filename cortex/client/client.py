@@ -6,7 +6,7 @@ import gzip
 import struct
 
 
-def upload_sample(host, port, path, encoding, formating):
+def upload_sample(host, port, path, encoding='gz', formating='proto'):
     """
     Read raw data zipped flie from <path>.
     Send user information and snapshots serialized to server
