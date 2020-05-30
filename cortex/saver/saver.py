@@ -34,6 +34,8 @@ def save(database, data_type, data):
         print (parser)
         raw_saver(parser, user_id, time, data, cortex_db)
 
+    return True
+
 @saver('user')
 def user_saver(user_json, cortex_db):
 

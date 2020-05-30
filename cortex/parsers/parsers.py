@@ -76,7 +76,6 @@ def parse_color_image(data):
     path_str = tmp_file.name
     tmp_file.close()
 
-    print ("color ", path_str)
     image.save(path_str, 'png')
     return path_str
 

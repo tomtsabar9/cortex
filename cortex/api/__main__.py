@@ -1,18 +1,23 @@
 import sys
 import click
-from .api import create_api
+from .api import run_api_server
+
+@click.group()
+def cli():
+    pass
 
 
 @click.command()
-@click.option('--host', default="127.0.0.1", help='server\'s ip')
-@click.option('--port', default=5000, help='server\'s port')
-@click.option('--db-url', default='postgresql://postgres:mysecretpassword@127.0.0.1:5432/', help='db url')
-def run_api(host, port, db_url):
+@click.option('-h', '--host', default="127.0.0.1", help='server\'s ip')
+@click.option('-p', '--port', default=5000, help='server\'s port')
+@click.option('-d','--database', default='postgresql://tomtsabar9@gmail.com:mysecretpassword@127.0.0.1:5432/', help='db url')
+def run_server(host, port, database):
     """
+    Cli that runs the api server
     """
-
-    api = create_api(db_url)  
-    api.run(host=host, port=port)
+    run_api_server(host, port, database, cli=True)
+    
 
 if __name__ == '__main__':
-    run_api()
+    cli.add_command(run_server)
+    cli()

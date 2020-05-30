@@ -10,6 +10,12 @@ import flask
 from flask_cors import cross_origin
 
 
+def run_api_server(host, port, database, cli=False):
+    """
+    Runs the api server.
+    """
+    api = create_api(database)  
+    api.run(host=host, port=port, debug=cli)
 
 def create_api(db_url):
     """
@@ -33,9 +39,19 @@ def create_api(db_url):
 
 
         user_dict = dict()
-        s = select([users_table])
-        for user in connection.execute(s).fetchall():
-            user_dict[user[0]] = user[1]
+
+        try:
+            s = select([users_table])
+            for user in connection.execute(s).fetchall():
+                user_dict[user[0]] = user[1]
+
+        #If table not initialize return empty dict
+        except db.exc.OperationalError:
+            pass
+        except Exception as e:
+            print (e)
+            return "Error, please contact administrator"
+
         return json.dumps(user_dict)
 
     @app.route('/users/<user_id>', methods=['GET'])
@@ -49,7 +65,14 @@ def create_api(db_url):
 
         s = select([users_table]).where(users_table.c.Id == int(user_id))
 
-        return json.dumps(list(connection.execute(s).fetchall()[0]))
+        user_details = list(connection.execute(s).fetchall()[0])
+
+        users_dict = dict()
+        users_dict['user_id'] = user_details[0]
+        users_dict['username'] = user_details[1]
+        users_dict['birthday'] = user_details[2]
+        users_dict['gender'] = int(user_details[3])
+        return json.dumps(users_dict)
 
     @app.route('/users/<user_id>/snapshots', methods=['GET'])
     def snapshots(user_id):
