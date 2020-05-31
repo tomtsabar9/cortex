@@ -17,6 +17,17 @@ def saver(name):
         return save_function
     return decorator
 
+def run_saver(db_url, queue_url):
+     
+    print ('Saver starting...')
+    msgQueue = MsgQueue(queue_url)
+    msgQueue.add_queue('raw_data')
+
+    callback = saver_queue_factory(msgQueue, db_url)
+
+    msgQueue.add_consumer('raw_data', callback)
+    msgQueue.consume()
+    
 def save(database, data_type, data):
 
     cortex_db = db.create_engine(database)
@@ -96,16 +107,6 @@ def raw_saver(parser, user_id, time, data, cortex_db):
 
     return True
 
-def run_saver(db_url, queue_url):
-     
-    print ('Saver starting...')
-    msgQueue = MsgQueue(queue_url)
-    msgQueue.add_queue('raw_data')
-
-    callback = saver_queue_factory(msgQueue, db_url)
-
-    msgQueue.add_consumer('raw_data', callback)
-    msgQueue.consume()
 
 
 def saver_queue_factory(msgQueue, db_url):
