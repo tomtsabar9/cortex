@@ -12,5 +12,5 @@ function main {
 }
 
 apt-get install gnome-terminal 
-chmod +x run_pipeline.sh
+chmod +x ./scripts/run_pipeline.sh
 main "$@"

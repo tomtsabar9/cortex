@@ -24,6 +24,12 @@ The project holds 9 microservices:
 
 
 ## Installation
+0. Make sure python 3.8 is installed in your linux machine and aliased to python
+    ```sh
+    $ python
+    Python 3.8 ...
+    >>>
+    ```
 
 1. Clone the repository and enter it:
 
