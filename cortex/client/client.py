@@ -28,6 +28,7 @@ def upload_sample(host, port, path, encoding='gz', formating='proto'):
                     while 1:
                         if send_snapshot(conn, raw_data, formating) == False:
                             break
+                     
                 except:
                     return 
     except Exception as e:
@@ -43,8 +44,7 @@ def send_serialized_data(conn, data_stream, formater):
     try:
         conn.send(formater(data_stream))
         return True
-    except Exception as e:
-        print (e)
+    except:
         return False
     
 

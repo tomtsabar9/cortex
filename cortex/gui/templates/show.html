@@ -14,6 +14,7 @@
   // pass it into the parse function
     snapshot_number=0
     loaded_img = 0
+    trigger = 0
     all_snapshots = getAllSnaps()
       
     function update()
@@ -77,10 +78,15 @@
 
     }
 
-    function reset() {
+    function reset_btn() {
         trigger = 0
         snapshot_number = 0
         update()
+    }
+
+    function next_btn() {
+        trigger = 0
+        next()
     }
 
     function next() {
@@ -92,8 +98,14 @@
         update()
     }
 
-    function back() {
+    function back_btn() {
         trigger = 0
+        back()
+        
+    }
+
+    function back() {
+        
         snapshot_number-=1
         if (snapshot_number<=0)
         {
@@ -102,9 +114,10 @@
         update()
     }
 
-    function play() {
+    function play_btn() {
         
         trigger = 1
+        loaded_img=0
         next()
 
         }
@@ -126,10 +139,10 @@
           </div>
           <div class="row">
             <div class="column2" style="max-width: 100%">
-              <button type="button" onclick="reset()" class="data-buttons " > reset </button>
-              <button type="button" onclick="back()" class="data-buttons "> previous </button>
-              <button type="button" onclick="play()" class="data-buttons " > play </button>
-              <button type="button" onclick="next()" class="data-buttons " > next </button>
+              <button type="button" onclick="reset_btn()" class="data-buttons " > reset </button>
+              <button type="button" onclick="back_btn()" class="data-buttons "> previous </button>
+              <button type="button" onclick="play_btn()" class="data-buttons " > play </button>
+              <button type="button" onclick="next_btn()" class="data-buttons " > next </button>
             </div>
           </div>
           <div class="row">
