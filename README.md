@@ -206,7 +206,7 @@ python:
 There exists two kinds of parser - image and regular.
 In order to add another parsers just go to the parsers.py file, add a parser function with one data argumant and simple return value. Add the @parser('new_parser') decorator to finish the job. As seen in the 'pose' parser the return value is the parsed data.
 
-```pycon
+```python
 @parser('pose')
 def parse_pose(data):
 
@@ -229,7 +229,7 @@ def parse_pose(data):
 The image parser is a little bit more complected, it saves the image in a temporary location and return its path.
 The wrapper responsible for moving the temporary image file to the right location.
 
-```pycon
+```python
 @parser('color_image')
 def parse_color_image(data):
         
