@@ -13,6 +13,7 @@
   // load the objects like you would with a normal jinja template i.e. {{ object }}, but add | tojson
   // pass it into the parse function
     snapshot_number=0
+    loaded_img = 0
     all_snapshots = getAllSnaps()
       
     function update()
@@ -64,6 +65,24 @@
 
         
     }
+
+    function loaded(){
+      loaded_img += 1
+
+      if (trigger == 1 && loaded_img>= 2 && snapshot_number<all_snapshots.length)
+      {
+        loaded_img=0
+        next()
+      }
+
+    }
+
+    function reset() {
+        trigger = 0
+        snapshot_number = 0
+        update()
+    }
+
     function next() {
         snapshot_number+=1
         if (snapshot_number>=all_snapshots.length)
@@ -74,6 +93,7 @@
     }
 
     function back() {
+        trigger = 0
         snapshot_number-=1
         if (snapshot_number<=0)
         {
@@ -81,6 +101,14 @@
         }
         update()
     }
+
+    function play() {
+        
+        trigger = 1
+        next()
+
+        }
+        
         
 
 
@@ -98,17 +126,18 @@
           </div>
           <div class="row">
             <div class="column2" style="max-width: 100%">
+              <button type="button" onclick="reset()" class="data-buttons " > reset </button>
               <button type="button" onclick="back()" class="data-buttons "> previous </button>
-              <button type="button" class="data-buttons " > play </button>
+              <button type="button" onclick="play()" class="data-buttons " > play </button>
               <button type="button" onclick="next()" class="data-buttons " > next </button>
             </div>
           </div>
           <div class="row">
             <div class="column2">
-              <img id="color_image" class="result-image" />
+              <img id="color_image" class="result-image" onload="loaded()" />
             </div>
             <div class="column2">
-             <img id="depth_image" class="result-image" />
+             <img id="depth_image" class="result-image"  onload="loaded()"/>
             </div>
           </div>
           <div class="row">
