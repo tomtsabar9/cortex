@@ -14,6 +14,7 @@ def run_api_server(host, port, database, cli=False):
     """
     Runs the api server.
     """
+    print ("API starting...")
     api = create_api(database)  
     api.run(host=host, port=port, debug=cli)
 

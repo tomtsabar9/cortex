@@ -31,6 +31,7 @@ def parse(name, data):
 def run_parser(name, queue_url ):
      
 
+    print ('Parser '+ name+' starting...')
     msgQueue = MsgQueue(queue_url)
 
     parsers = queue_parser_factory(msgQueue)

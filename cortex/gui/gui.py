@@ -11,7 +11,7 @@ def run_server(host, port, api_host, api_port, cli=False):
     """
     Runs the flask appication the runs the GUI.
     """
-
+    print ('GUI starting...')
     gui = create_gui(api_host, api_port)  
     gui.run(host=host, port=port, debug=cli)
 
@@ -33,10 +33,6 @@ def create_gui(api_host, api_port, requests = requests ):
         The defaults view of the website: list all avialible users
         """
         r = requests.get(url+'/users')
-        print (type(r))
-        print (r.__dict__)
-        print (requests.__dict__)
-        print (type(r.json()))
 
         return render_template('users.html', users = r.json().items())
 

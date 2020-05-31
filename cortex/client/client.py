@@ -14,6 +14,7 @@ def upload_sample(host, port, path, encoding='gz', formating='proto'):
     Future formaters will read the data into proto_buf structure and send it that way.
     """
 
+    print ("Client starting...")
     try:
         reader = getReader(path, encoding)
 

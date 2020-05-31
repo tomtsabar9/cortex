@@ -98,6 +98,7 @@ def raw_saver(parser, user_id, time, data, cortex_db):
 
 def run_saver(db_url, queue_url):
      
+    print ('Saver starting...')
     msgQueue = MsgQueue(queue_url)
     msgQueue.add_queue('raw_data')
 

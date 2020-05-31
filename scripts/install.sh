@@ -11,5 +11,6 @@ function main {
     .env/bin/pip install -r requirements.txt
 }
 
-
+apt-get install gnome-terminal 
+chmod +x run_pipeline.sh
 main "$@"

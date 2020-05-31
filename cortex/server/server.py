@@ -23,6 +23,8 @@ def run_server(host, port, queue_url='rabbitmq://127.0.0.1:5672/', root='data',h
     Listen to incoming client connections, parse them and prints the msg
     """
 
+    print ("Server starting...")
+
     server = Listener(host, port)
     
     server.start()
