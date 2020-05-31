@@ -19,6 +19,9 @@ from .. import MsgQueue
 all_parsers = dict()
 
 def parser(name):
+    """
+    Decorates and adds the parsers to a global dictionary
+    """
     def decorator(parse_function):
         all_parsers[name] = parse_function
         return parse_function
@@ -26,11 +29,15 @@ def parser(name):
 
 
 def parse(name, data):
+    """
+    Return parse the <data> with <name> parser and returns the result.
+    """
     return all_parsers[name](data)
 
 def run_parser(name, queue_url ):
-     
-
+    """
+    Runs <name> parsers that work with <queue_url> queue.
+    """
     print ('Parser '+ name+' starting...')
     msgQueue = MsgQueue(queue_url)
 
@@ -47,8 +54,9 @@ def run_parser(name, queue_url ):
         
 @parser('pose')
 def parse_pose(data):
-
-        
+    """
+    Parses protobuf pose
+    """ 
     pose = PoseMsg()
     pose.ParseFromString(data)
 
@@ -66,8 +74,9 @@ def parse_pose(data):
 
 @parser('color_image')
 def parse_color_image(data):
-        
-
+    """
+    Parses protobuf color_image
+    """ 
     color_image = ColorImageMsg()
     color_image.ParseFromString(data)
 
@@ -82,7 +91,9 @@ def parse_color_image(data):
 
 @parser('depth_image')
 def parse_depth_image(data):
-  
+    """
+    Parses protobuf depth_image
+    """ 
     depth_image = DepthImageMsg()
     depth_image.ParseFromString(data)
 
@@ -109,7 +120,9 @@ def parse_depth_image(data):
 
 @parser('feelings')
 def parse_feelings(data):
-
+    """
+    Parses protobuf feelings
+    """ 
 
     feelings = FeelingsMsg()
     feelings.ParseFromString(data)

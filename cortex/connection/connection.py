@@ -13,6 +13,9 @@ class Connection:
         self.socket.close()
 
     def send(self, data):
+        """
+         
+        """
         return self.socket.send(struct.pack('<I', len(data)) + data)
 
     def receive(self):
