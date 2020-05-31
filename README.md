@@ -8,7 +8,7 @@ You are welcome to follow my progress on Trello https://trello.com/b/7jks3j5q/co
 
 See documentation in https://cortex-project.readthedocs.io/en/latest/.
 ## Overview
-![Image of system](https://github.com/tomtsabar9/cortex/system.png)
+![Image of system](https://raw.githubusercontent.com/tomtsabar9/cortex/master/system.png)
 TODO fill
 
 ## Installation
@@ -21,7 +21,7 @@ TODO fill
     $ cd cortex/
     ```
 2. Run the installation script and activate the virtual environment:
-    ```
+    ```sh
     ...
     $ sudo ./scripts/install.sh
     ...
@@ -30,7 +30,7 @@ TODO fill
     ```
 
 3. Run the tests, just to make sure:
-    ```
+    ```sh
     $ pytest
     ```
 
@@ -75,26 +75,26 @@ The following will demonstrate how to use each of the microservices:
 
 #### Client:
     bash:
-    ```sh
+```sh
     $  python -m cortex.client upload-sample --host '127.0.0.1' --port 8000 <sample_path.gz>
-    ```
+```
 
     python:
-    ```pycon
+```pycon
     >>> from cortex.client import upload_sample
     >>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz')
-    ```
+```
 #### Server:
     bash:
-    ```sh
+```sh
     $  python -m cortex.server run-server --host '127.0.0.1' --port 8000 'rabbitmq://127.0.0.1:5672/'
-    ```
+```
 
     python:
-    ```pycon
+```pycon
     >>> from cortex.server import run_server
     >>> run_server(host='127.0.0.1', port=8000, publish=print)
-    ```
+```
 
 #### Parsers:
     bash:
