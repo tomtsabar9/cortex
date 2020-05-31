@@ -1,4 +1,5 @@
 from .server import Handler
+from .listener import Listener
 from . import DummyStream
 from . import DummyConn
 from . import DummyQueue
@@ -8,13 +9,26 @@ from .. import ColorImageMsg
 from .. import FeelingsMsg
 
 import pytest
-
+import socket
 
 @pytest.fixture
 def basic_handler(tmp_path):
     conn = DummyConn('')
     return Handler(conn, tmp_path, 'dummy://', None)
 
+
+def test_listener_basic():
+    listener = Listener(port=1234)
+
+    listener.start()
+
+
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    result = s.connect_ex(('127.0.0.1', 1234))
+
+    assert result == 0
+    
 
 
 def test_save_user_data(basic_handler):
