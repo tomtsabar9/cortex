@@ -24,7 +24,7 @@ The project holds 9 microservices:
 
 
 ## Installation
-0. Make sure python 3.8 is installed in your linux machine and aliased to python
+0. Make sure python 3.8 is installed in your linux machine and aliased to python. Also make sure virtualenv module is installed
     ```sh
     $ python
     Python 3.8 ...
@@ -40,10 +40,10 @@ The project holds 9 microservices:
     ```
 2. Run the installation script and activate the virtual environment:
     ```sh
-    $ sudo ./scripts/install.sh
+    $ ./scripts/install.sh
     ...
     $ source .env/bin/activate
-    [cortex] $ 
+    [cortex] $ chmod +x ./scripts/run_pipeline.sh
     ```
 
 3. Run the tests, just to make sure:
@@ -60,7 +60,7 @@ Download a sample and put it in:
 
 
 ```sh
-$ sudo ./scripts/run_pipeline.sh <email> <password>
+[cortex] $ ./scripts/run_pipeline.sh <email> <password>
 ```
 This will run two scripts:
     1. ./scripts/start_dockers.sh
@@ -91,8 +91,8 @@ Surf to http://localhost:5000/users as good starting position.
 When running independently you should export yourself the username and password:
 bash:
 ```sh
-$  export _USERNAME=<username>
-$  export _PASSWORD=<password>
+[cortex] $  export _USERNAME=<username>
+[cortex] $  export _PASSWORD=<password>
 ```
 
 Start with exporting the enc variables of username and password.
@@ -105,7 +105,7 @@ The following will demonstrate how to use each of the microservices:
 #### Client:
 bash:
 ```sh
-$  python -m cortex.client upload-sample --host '127.0.0.1' --port 8000 <sample_path.gz>
+[cortex] $  python -m cortex.client upload-sample --host '127.0.0.1' --port 8000 <sample_path.gz>
 ```
 
 python:
@@ -116,7 +116,7 @@ python:
 #### Server:
 bash:
 ```sh
-$  python -m cortex.server run-server --host '127.0.0.1' --port 8000 'rabbitmq://127.0.0.1:5672/'
+[cortex] $  python -m cortex.server run-server --host '127.0.0.1' --port 8000 'rabbitmq://127.0.0.1:5672/'
 ```
 
 python:
@@ -128,12 +128,12 @@ python:
 #### Parsers:
 bash:
 ```sh
-$  python -m cortex.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:5672/'
+[cortex] $  python -m cortex.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:5672/'
 ```
 
 or for parsing raw data from file
 ```sh
-$  python -m cortex.parsers parse 'pose' '<path>'
+[cortex] $  python -m cortex.parsers parse 'pose' '<path>'
 ```
 python:
 ```pycon
@@ -149,12 +149,12 @@ or
 #### Saver:
 bash:
 ```sh
-$  python -m cortex.saver run-saver 'postgresql://127.0.0.1:5432' 'rabbitmq://127.0.0.1:5672/'
+[cortex] $  python -m cortex.saver run-saver 'postgresql://127.0.0.1:5432' 'rabbitmq://127.0.0.1:5672/'
 ```
 
 or for saving raw data from file
 ```sh
-$ python -m cortex.saver save --database 'postgresql://127.0.0.1:5432' 'pose' '<path>'
+[cortex] $ python -m cortex.saver save --database 'postgresql://127.0.0.1:5432' 'pose' '<path>'
 ```
 
 python:
@@ -171,7 +171,7 @@ or
 #### API:
 bash:
 ```sh
-$  python -m cortex.api run-server --host '127.0.0.1' --port 5000 --database 'postgresql://127.0.0.1:5432'
+[cortex] $  python -m cortex.api run-server --host '127.0.0.1' --port 5000 --database 'postgresql://127.0.0.1:5432'
 ```
 
 python:
@@ -183,20 +183,20 @@ python:
 #### CLI:
 bash:
 ```sh
-$  python -m cortex.cli get-users
+[cortex] $  python -m cortex.cli get-users
 …
-$ python -m cortex.cli get-user 42
+[cortex] $ python -m cortex.cli get-user 42
 …
-$ python -m cortex.cli get-snapshots 42
+[cortex] $ python -m cortex.cli get-snapshots 42
 …
-$ python -m cortex.cli get-snapshot 42 AABBCCDDEE
+[cortex] $ python -m cortex.cli get-snapshot 42 AABBCCDDEE
 …
-$ python -m cortex.cli get-result 42 AABBCCDDEE 'pose'
+[cortex] $ python -m cortex.cli get-result 42 AABBCCDDEE 'pose'
 ```
 #### GUI:
 bash:
 ```sh
-$  python -m cortex.gui run-server --host '127.0.0.1' --port 8080 --api-host '127.0.0.1' --api-port 5000
+[cortex] $  python -m cortex.gui run-server --host '127.0.0.1' --port 8080 --api-host '127.0.0.1' --api-port 5000
 ```
 
 python:

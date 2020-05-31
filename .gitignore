@@ -4,3 +4,5 @@ sample.mind.gz
 data/
 *.pyc
 *__pycache__
+build/
+dist/
