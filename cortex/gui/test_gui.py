@@ -11,8 +11,9 @@ from sqlalchemy.sql import select
 import json
 import pytest
 
-
-
+SQLLITE = 'sqlite:///'
+TMP_DB_FILE = 'tmp.db'
+DB_PATH = 'db_path'
 
 @pytest.fixture
 def client(tmp_path):
@@ -28,14 +29,14 @@ def client(tmp_path):
 
 
     requests = DummyRequests(responses)
-    tmp_file = tmp_path / 'tmp.db'
-    db_path = 'sqlite:///'+str(tmp_file)
+    tmp_file = str (tmp_path / TMP_DB_FILE)
+    db_path = f'{SQLLITE}{tmp_file}'
     app = create_gui('127.0.0.1', 1337, requests)
     
     app.config['TESTING'] = True
 
     with app.test_client() as client:
-        client.__dict__['db_path'] = db_path
+        client.__dict__[DB_PATH] = db_path
         yield client
 
 

@@ -23,8 +23,8 @@ def create_gui(api_host, api_port, requests = requests ):
         Show: view interactivly all the snapshots of some user.
     """
     app = flask.Flask(__name__, instance_relative_config=True)
-    app.config["DEBUG"] = True
-    url = 'http://'+api_host+":"+str(api_port)
+    app.config['DEBUG'] = True
+    url = f'http://{api_host}:{str(api_port)}'
    
 
     @app.route('/', methods=['GET'])
@@ -32,7 +32,7 @@ def create_gui(api_host, api_port, requests = requests ):
         """
         The defaults view of the website: list all avialible users
         """
-        r = requests.get(url+'/users')
+        r = requests.get(f'{url}/users')
 
         return render_template('users.html', users = r.json().items())
 
@@ -42,7 +42,7 @@ def create_gui(api_host, api_port, requests = requests ):
         """
         Shows nice graphs and yo
         """
-        r = requests.get(url+'/users/'+user_id+'/snapshots')
+        r = requests.get(f'{url}/users/{user_id}/snapshots')
         
         snapshots = list(r.json().items())
 
@@ -51,7 +51,7 @@ def create_gui(api_host, api_port, requests = requests ):
         for snapshot in snapshots:
             snapt_dict=dict()
 
-            snapshots_options = requests.get(url+'/users/'+user_id+'/snapshots/'+snapshot[0]).json()
+            snapshots_options = requests.get(f'{url}/users/{user_id}/snapshots/{snapshot[0]}').json()
 
             options = snapshots_options['options']
 
@@ -59,7 +59,7 @@ def create_gui(api_host, api_port, requests = requests ):
             snapt_dict['id'] = str(snapshot[0])
             
             for option in options:
-                snapt_dict[option] = url+'/users/'+user_id+'/snapshots/'+snapshot[0]+"/"+option
+                snapt_dict[option] = f'{url}/users/{user_id}/snapshots/{snapshot[0]}/{option}'
 
 
             snapshots_full_data.append(snapt_dict)

@@ -14,7 +14,7 @@ def upload_sample(host, port, path, encoding='gz', formating='proto'):
     Future formaters will read the data into proto_buf structure and send it that way.
     """
 
-    print ("Client starting...")
+    print ('Client starting...')
     try:
         reader = getReader(path, encoding)
 
@@ -60,7 +60,7 @@ def send_user_data(conn, data_stream, formating):
     stub for readibilty and future differences between send_user_data and send_snapshot
     """
 
-    if formating == "proto":
+    if formating == 'proto':
         return send_serialized_data(conn, data_stream, proto_formater)
 
     return send_serialized_data(conn, data_stream, default_formater)
@@ -70,7 +70,7 @@ def send_snapshot(conn, data_stream, formating):
     stub for readibilty and future differences between send_user_data and send_snapshot
     """
 
-    if formating == "proto":
+    if formating == 'proto':
         return send_serialized_data(conn, data_stream, proto_formater)
 
     return send_serialized_data(conn, data_stream, default_formater)

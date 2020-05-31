@@ -15,7 +15,7 @@ def run_api_server(host, port, database, cli=False):
     """
     Runs the api server.
     """
-    print ("API starting...")
+    print ('API starting...')
     api = create_api(database)  
     api.run(host=host, port=port, debug=cli)
 
@@ -32,7 +32,7 @@ def create_api(database):
     app = flask.Flask(__name__)
 
     if 'postgresql' in database:
-        database = database.replace('://', '://'+username+':'+password+'@')
+        database = database.replace('://', f'://{username}:{password}@')
         cortex_db = db.create_engine(database, pool_size=50, max_overflow=0)
     else:
         cortex_db = db.create_engine(database)
@@ -60,7 +60,7 @@ def create_api(database):
             pass
         except Exception as e:
             print (e)
-            return "Error, please contact administrator"
+            return 'Error, please contact administrator'
 
         return json.dumps(user_dict)
 

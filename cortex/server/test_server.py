@@ -13,7 +13,7 @@ import pytest
 @pytest.fixture
 def basic_handler(tmp_path):
     conn = DummyConn('')
-    return Handler(conn, tmp_path, "dummy://", None)
+    return Handler(conn, tmp_path, 'dummy://', None)
 
 
 

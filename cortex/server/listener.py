@@ -5,7 +5,7 @@ class Listener:
     """
     Wraps server basic behavior
     """
-    def __init__(self, host = "0.0.0.0", port=8000, backlog = 1000, reuseaddr = True):
+    def __init__(self, host = '0.0.0.0', port=8000, backlog = 1000, reuseaddr = True):
         self.port = port
         self.host = host
         self.backlog = backlog
@@ -18,7 +18,7 @@ class Listener:
     def __exit__(self, exception, error, traceback):
         self.stop()
     def __repr__(self):
-        return f"Listener(port={self.port!r}, host={self.host!r}, backlog={self.backlog!r}, reuseaddr={self.reuseaddr!r})"
+        return f'Listener(port={self.port!r}, host={self.host!r}, backlog={self.backlog!r}, reuseaddr={self.reuseaddr!r})'
 
     def start(self):
         self.server = socket.socket()

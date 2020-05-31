@@ -5,14 +5,14 @@ def get_table(metadata, name):
   """
   Wraps usage of database tables so they can be managed from one place.
   """
-  if name == "users":
+  if name == 'users':
     return db.Table('users', metadata,
               db.Column('Id', db.BigInteger(), primary_key=True),
               db.Column('Name', db.String() , nullable=False),
               db.Column('Birth', db.Integer()),
               db.Column('Gender', db.CHAR()),
               )
-  elif name == "snapshots":
+  elif name == 'snapshots':
     return db.Table('snapshots', metadata,
               db.Column('Uid', db.String(), primary_key=True, nullable=False),
               db.Column('Id', db.BigInteger()),

@@ -31,7 +31,7 @@ def run_parser(name, queue_url ):
     """
     Runs <name> parsers that work with <queue_url> queue.
     """
-    print ('Parser '+ name+' starting...')
+    print (f'Parser {name} starting...')
     msgQueue = MsgQueue(queue_url)
 
     parsers = queue_parser_factory(msgQueue)
@@ -77,7 +77,7 @@ def parse_color_image(data):
     color_image = ColorImageMsg()
     color_image.ParseFromString(data)
 
-    image = Image.frombytes("RGB", (color_image.width, color_image.height), color_image.data, 'raw')
+    image = Image.frombytes('RGB', (color_image.width, color_image.height), color_image.data, 'raw')
 
     tmp_file = tempfile.NamedTemporaryFile()                
     path_str = tmp_file.name
@@ -98,7 +98,7 @@ def parse_depth_image(data):
 
     special_prefix_array = [bytearray()]
     special_prefix_array.extend(depth_image.data)
-    data_bytearray = bytes(reduce(lambda a, x: a + bytearray(struct.pack("d", x)), special_prefix_array))
+    data_bytearray = bytes(reduce(lambda a, x: a + bytearray(struct.pack('d', x)), special_prefix_array))
     array_np = np.frombuffer(data_bytearray).reshape((depth_image.height, depth_image.width))
 
     plt.imshow(array_np, cmap='binary', interpolation='nearest')
@@ -107,7 +107,7 @@ def parse_depth_image(data):
     plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
     tmp_file = tempfile.NamedTemporaryFile()                
-    path_str = tmp_file.name +".png"
+    path_str = tmp_file.name +'.png'
     tmp_file.close()
             
     plt.savefig(path_str)

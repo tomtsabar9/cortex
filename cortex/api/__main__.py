@@ -8,7 +8,7 @@ def cli():
 
 
 @click.command()
-@click.option('-h', '--host', default="127.0.0.1", help='server\'s ip')
+@click.option('-h', '--host', default='127.0.0.1', help='server\'s ip')
 @click.option('-p', '--port', default=5000, help='server\'s port')
 @click.option('-d','--database', default='postgresql://127.0.0.1:5432/', help='db url')
 def run_server(host, port, database):

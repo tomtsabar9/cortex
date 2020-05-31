@@ -20,7 +20,7 @@ def reflect(host, port):
 @reflect.command()
 def get_users():
     
-    users_url = URL + "users"
+    users_url = f'{URL}users'
     # sending get request and saving the response as response object 
     r = requests.get(url = users_url, timeout=3) 
   
@@ -31,7 +31,7 @@ def get_users():
 @reflect.command()
 @click.argument('user-id')
 def get_user(user_id):
-    user_url = URL + 'users/' + user_id
+    user_url = f'{URL}users/{user_id}'
     # sending get request and saving the response as response object 
     r = requests.get(url = user_url, timeout=3) 
   
@@ -42,7 +42,7 @@ def get_user(user_id):
 @reflect.command()
 @click.argument('user-id')
 def get_snapshots(user_id):
-    snapshots_url = URL + 'users/' + user_id + '/snapshots'
+    snapshots_url = f'{URL}users/{user_id}/snapshots'
     # sending get request and saving the response as response object 
     r = requests.get(url = snapshots_url, timeout=3) 
   
@@ -54,7 +54,7 @@ def get_snapshots(user_id):
 @click.argument('user-id')
 @click.argument('snapshot-id')
 def get_snapshot(user_id, snapshot_id):
-    snapshot_url = URL + "users/" + user_id + "/snapshots/" + snapshot_id
+    snapshot_url = f'{URL}users/{user_id}/snapshots{snapshot_id}'
     # sending get request and saving the response as response object 
     r = requests.get(url = snapshot_url, timeout=3) 
   
@@ -67,7 +67,7 @@ def get_snapshot(user_id, snapshot_id):
 @click.argument('snapshot-id')
 @click.argument('result')
 def get_result(user_id, snapshot_id, result):
-    result_url = URL + "users/" + user_id + "/snapshots/" + snapshot_id + "/" +result
+    result_url = f'{URL}users/{user_id}/snapshots{snapshot_id}/{result}'
     # sending get request and saving the response as response object 
     r = requests.get(url = result_url, timeout=3) 
     

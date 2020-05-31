@@ -42,7 +42,7 @@ def save(database, data_type, data):
     password = os.environ.get('_PASSWORD')
 
     if 'postgresql' in database:
-        database = database.replace('://', '://'+username+':'+password+'@')
+        database = database.replace('://', f'://{username}:{password}@')
         cortex_db = db.create_engine(database, pool_size=50, max_overflow=0)
     else:
         cortex_db = db.create_engine(database)
@@ -135,7 +135,7 @@ def saver_queue_factory(msgQueue, db_url):
   
     def callback(ch, method, properties, body):
 
-        suffix, data = body.decode("utf-8").split(":", 1)
+        suffix, data = body.decode('utf-8').split(':', 1)
                
         if (save(db_url, suffix, data)):
             ch.basic_ack(delivery_tag = method.delivery_tag)

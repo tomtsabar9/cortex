@@ -23,7 +23,7 @@ def run_server(host, port, queue_url='rabbitmq://127.0.0.1:5672/', root='data',h
     Listen to incoming client connections, parse them and prints the msg
     """
 
-    print ("Server starting...")
+    print ('Server starting...')
 
     server = Listener(host, port)
     
@@ -35,7 +35,7 @@ def run_server(host, port, queue_url='rabbitmq://127.0.0.1:5672/', root='data',h
             client = server.accept()
 
             handler = Handler(client, root, queue_url, publish)
-            print ("client connected")
+            print ('client connected')
             handler.start()
             handlers.append(handler)
 
@@ -193,13 +193,13 @@ class Handler(threading.Thread):
 
                     results = self.save_data_for_parsers(snapshot)
                     
-                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=str(self.root.absolute())+":"+str(snapshot.datetime))
+                    self.msgQueue.publish(ex_name='parsers',q_name='', msg=f'{str(self.root.absolute())}:{str(snapshot.datetime)}')
 
                     self.save_snapshot_meta(user.user_id, snapshot.datetime, results)
 
-                    print ("got a snapshot")
+                    print ('got a snapshot')
                 except :
-                    print ("client disconnected")
+                    print ('client disconnected')
                     return
 
                     

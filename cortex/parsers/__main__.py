@@ -27,7 +27,7 @@ def parse(name, data_file):
 
         data = path.read_bytes()
     except:
-        print ("Error reading file: "+data_file)
+        print (f'Error reading file: {data_file}')
         return
      
     print (parse_imp(name, data))

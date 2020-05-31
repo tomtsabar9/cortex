@@ -7,9 +7,9 @@ def cli():
     pass
 
 @click.command()
-@click.option('-h', '--host', default="127.0.0.1", help='server\'s ip')
+@click.option('-h', '--host', default='127.0.0.1', help='server\'s ip')
 @click.option('-p', '--port', default=8080, help='server\'s port')
-@click.option('-H', '--api-host', default="127.0.0.1", help='api\'s ip')
+@click.option('-H', '--api-host', default='127.0.0.1', help='api\'s ip')
 @click.option('-P', '--api-port', default=5000, help='api\'s port')
 def run_server(host, port, api_host, api_port):
     """

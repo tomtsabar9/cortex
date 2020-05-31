@@ -20,7 +20,7 @@ def cli():
     signal.signal(signal.SIGINT, signal_handler)
 
 @click.command()
-@click.option('-h', '--host', default="127.0.0.1", help='server\'s ip')
+@click.option('-h', '--host', default='127.0.0.1', help='server\'s ip')
 @click.option('-p', '--port', default=8000, help='server\'s port')
 @click.option('-r', '--root', default='data', help='root directory for files')
 @click.argument('queue_url', nargs=1, default='rabbitmq://127.0.0.1:5672/', type=click.UNPROCESSED)
