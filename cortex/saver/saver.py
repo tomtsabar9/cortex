@@ -13,13 +13,18 @@ from .. import random_string
 all_savers = dict()
 
 def saver(name):
+    """
+    Decorates and adds the savers to a global dictionary
+    """
     def decorator(save_function):
         all_savers[name] = save_function
         return save_function
     return decorator
 
 def run_saver(db_url, queue_url):
-     
+    """
+    Runs saver, consume from <queue_url> queue, saves to <db_url>.
+    """
     print ('Saver starting...')
     msgQueue = MsgQueue(queue_url)
     msgQueue.add_queue('raw_data')
@@ -30,7 +35,9 @@ def run_saver(db_url, queue_url):
     msgQueue.consume()
     
 def save(database, data_type, data):
-
+    """
+    save the <data> to right table using <data_type> in <database> db
+    """
     username = os.environ.get('_USERNAME')
     password = os.environ.get('_PASSWORD')
 
@@ -57,7 +64,9 @@ def save(database, data_type, data):
 
 @saver('user')
 def user_saver(user_json, cortex_db):
-
+    """
+    Saves user details
+    """
     connection = cortex_db.connect()
     metadata = db.MetaData()
 
@@ -77,7 +86,9 @@ def user_saver(user_json, cortex_db):
 
 @saver('snapshot')
 def snapshot_saver(snap_json, cortex_db):
-
+    """
+    Saves single snapshot details
+    """
     connection = cortex_db.connect()
     metadata = db.MetaData()
 

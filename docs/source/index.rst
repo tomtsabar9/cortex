@@ -16,9 +16,6 @@ Welcome to cortex's documentation!
 .. automodule:: cortex.api.api
     :members:
 
-.. automodule:: cortex.cli.__main__
-    :members:
-
 .. automodule:: cortex.client.client
     :members:
 
@@ -28,7 +25,7 @@ Welcome to cortex's documentation!
 .. automodule:: cortex.parsers.parsers
     :members:
 
-.. autoclass:: cortex.queue.MsgQueue
+.. autoclass:: cortex.queue.queue.MsgQueue
     :members:
 
 .. automodule:: cortex.reader.formats

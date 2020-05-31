@@ -27,13 +27,6 @@ def parser(name):
         return parse_function
     return decorator
 
-
-def parse(name, data):
-    """
-    Return parse the <data> with <name> parser and returns the result.
-    """
-    return all_parsers[name](data)
-
 def run_parser(name, queue_url ):
     """
     Runs <name> parsers that work with <queue_url> queue.
@@ -50,7 +43,11 @@ def run_parser(name, queue_url ):
     msgQueue.add_consumer(name, parsers[name])
     msgQueue.consume()
 
-  
+def parse(name, data):
+    """
+    Return parse the <data> with <name> parser and returns the result.
+    """
+    return all_parsers[name](data)
         
 @parser('pose')
 def parse_pose(data):

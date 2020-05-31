@@ -42,6 +42,7 @@ def run_server(host, port, queue_url='rabbitmq://127.0.0.1:5672/', root='data',h
         except Exception as e:
             print (e)
             break
+
 class OuterQueue:
     def __init__(self, publish_func):
         self.publish_func = publish_func
@@ -80,12 +81,22 @@ class Handler(threading.Thread):
         
   
     def stop(self):
+        """
+
+        """
         self.stop_event.set()
 
     def stopped(self):
+        """
+         
+        """
         return self.stop_event.is_set()
 
     def get_parsers(self):
+        """
+        Get parsers from protobuf object.
+        If future sub-snapshot will be added they will be automaticly parsed and published.
+        """
         parsers = []
         for item in SnapshotMsg.__dict__.items():
             if not 'FieldProperty' in str(type(item[1])):
@@ -97,6 +108,9 @@ class Handler(threading.Thread):
         return parsers
 
     def save_user_data(self, user):
+        """
+        Publish user details
+        """
         self.root = self.root / str(user.user_id)
         self.root.mkdir(parents=True, exist_ok=True)
 
@@ -111,6 +125,9 @@ class Handler(threading.Thread):
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='user:'+user_json)
 
     def save_snapshot_meta(self, user_id, snapshot_date, results):
+        """
+        Publish snapshot metadata
+        """
         snap_json = json.dumps(dict(
                 user_id = user_id,
                 snapshot_date = snapshot_date,
@@ -121,6 +138,9 @@ class Handler(threading.Thread):
         self.msgQueue.publish(ex_name='',q_name='raw_data', msg='snapshot:'+snap_json)
 
     def save_data_for_parsers(self, snapshot):
+        """
+        Check and write data for available parses
+        """
         succesful_parsers = []
         for key in self.parsers:
             if self.save_snapshot_submsg(snapshot, key):
@@ -129,6 +149,9 @@ class Handler(threading.Thread):
         return succesful_parsers
 
     def save_snapshot_submsg(self, snapshot, submsg_type):
+        """
+        Save sub messesge of snapshot in file, before passed to parser
+        """
         try:
             self.submsg_dir = self.root / submsg_type
             self.submsg_dir.mkdir(parents=True, exist_ok=True)
