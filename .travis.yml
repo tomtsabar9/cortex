@@ -6,4 +6,4 @@ install:
 script:
   - pytest --cov-report term --cov=cortex
 after_success:
-  - codecov
+  - bash < (curl -s https://codecov.io/bash)
