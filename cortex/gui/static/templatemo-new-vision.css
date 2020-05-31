@@ -833,10 +833,18 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 }
 
 /* Create two equal columns that sits next to each other */
-.column {
+.column2 {
   flex: 100%;
   padding: 0 4px;
   max-width: 50%;
+  text-align: center;
+}
+
+/* Create two equal columns that sits next to each other */
+.column3 {
+  flex: 100%;
+  padding: 0 4px;
+  max-width: 33%;
   text-align: center;
 }
 

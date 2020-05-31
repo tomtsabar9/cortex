@@ -25,7 +25,10 @@ def create_api(db_url):
     app = flask.Flask(__name__)
     app.config["DEBUG"] = True
 
-    cortex_db = db.create_engine(db_url)
+    if 'postgresql' in db_url:
+        cortex_db = db.create_engine(db_url, pool_size=50, max_overflow=0)
+    else:
+        cortex_db = db.create_engine(db_url)
 
     @app.route('/users', methods=['GET'])
     def users():

@@ -14,49 +14,12 @@
   // pass it into the parse function
     snapshot_number=0
     all_snapshots = getAllSnaps()
-
-    var previous_x = []
-    var previous_y = []
-    var previous_z = []
-    
-    function drawPlot(x, y, z)
-    {
       
-        console.log([x.toString()])
-        var trace_current = {
-          x:[x.toString()], y: [z.toString()],
-          mode: 'markers',
-          name: 'current',
-          marker: {size: y*200},
-          type: 'scatter'
-        };
-
-        var trace_previous = {
-          x:previous_x, y: previous_z,
-          mode: 'markers',
-          name: 'previous',
-          marker: {size : previous_y},
-          type: 'scatter'
-        };
-
-        var layout = {
-        title:'Position:'
-      };
-
-        traces = [trace_current, trace_previous]
-
-
-        var data = traces;
-
-        Plotly.newPlot('myDiv', data, layout);
-
-        previous_x.push(x.toString())
-        previous_z.push(z.toString())
-        previous_y.push(y*200)
-      
-    }
     function update()
     {
+        var date = new Date(0)
+        date.setUTCMilliseconds(all_snapshots[snapshot_number].time)
+        document.getElementById("date").innerHTML = date.toGMTString() + " ( " + date.getMilliseconds() + " ms)"
         document.getElementById("color_image").src = all_snapshots[snapshot_number]['color_image']+'/data';
         document.getElementById("depth_image").src = all_snapshots[snapshot_number]['depth_image']+'/data';
 
@@ -94,7 +57,6 @@
                 document.getElementById("rz").innerHTML = rz
                 document.getElementById("rw").innerHTML = rw
           
-                drawPlot(px, py, pz)
             }
         };
         xhttp.open("GET", all_snapshots[snapshot_number].pose, true);
@@ -123,7 +85,6 @@
 
 
     </script>
-    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
 {% endblock %}
 
@@ -131,81 +92,92 @@
 {% block content %}
 
           <div class="row">
-            <div class="column" style="max-width: 100%">
+            <div class="column2" style="max-width: 100%">
+              <textbox id="date"></textbox>
+            </div>
+          </div>
+          <div class="row">
+            <div class="column2" style="max-width: 100%">
               <button type="button" onclick="back()" class="data-buttons "> previous </button>
               <button type="button" class="data-buttons " > play </button>
               <button type="button" onclick="next()" class="data-buttons " > next </button>
             </div>
           </div>
           <div class="row">
-            <div class="column">
+            <div class="column2">
               <img id="color_image" class="result-image" />
             </div>
-            <div class="column">
+            <div class="column2">
              <img id="depth_image" class="result-image" />
             </div>
           </div>
           <div class="row">
-            <div class="column">
-              <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
-            </div>
-            <div class="column">
-              <div class="row">
-                  <h4> Feelings: </h4>
-              </div>
+
+
+              <div class="column3">
                   <div class="row">
-                    <label>Hunger:</label>
+                    <h4>Feelings: </h4>
+                  </div>
+              
+                  <div class="row">
+                    <label>Hunger:&nbsp;</label>
                     <textbox id="hunger"></textbox>
                   </div>
                   <div class="row">
-                    <label>Thirst:</label>
+                    <label>Thirst:&nbsp;</label>
                     <textbox id="thirst"></textbox>
                   </div>
                   <div class="row">
-                    <label>Exhaustion:</label>
+                    <label>Exhaustion:&nbsp;</label>
                     <textbox id="exhaustion"></textbox>
                   </div>
                   <div class="row">
-                    <label>Happiness:</label>
+                    <label>Happiness:&nbsp;</label>
                     <textbox id="happiness"></textbox>
                   </div>
-
-              <div class="row">
-                  <h4> Position: </h4>
               </div>
+
+              <div class="column3">
                   <div class="row">
-                    <label>X:</label>
+                    <h4>Position: </h4>
+                  </div>
+              
+                  <div class="row">
+                    <label>X:&nbsp;</label>
                     <textbox id="px"></textbox>
                   </div>
                   <div class="row">
-                    <label>Y:</label>
+                    <label>Y:&nbsp;</label>
                     <textbox id="py"></textbox>
                   </div>
                   <div class="row">
-                    <label>X:</label>
+                    <label>X:&nbsp;</label>
                     <textbox id="pz"></textbox>
                   </div>
+              </div>
             
               
-              <div class="row">
-                  <h4> Rotation: </h4>
-              </div>
+              <div class="column3">
                   <div class="row">
-                    <label>X:</label>
+                    <h4>Rotation: </h4>
+                  </div>
+              
+                  <div class="row">
+                    <label>X:&nbsp;</label>
                     <textbox id="rx"></textbox>
                   </div>
                   <div class="row">
-                    <label>Y:</label>
+                    <label>Y:&nbsp;</label>
                     <textbox id="ry"></textbox>
                   </div>
                   <div class="row">
-                    <label>Z:</label>
+                    <label>Z:&nbsp;</label>
                     <textbox id="rz"></textbox>
                   </div>
                   <div class="row">
-                    <label>W:</label>
+                    <label>W:&nbsp;</label>
                     <textbox id="rw"></textbox>
                   </div>
-            </div>
+              </div>
             </div>
 {% endblock %}

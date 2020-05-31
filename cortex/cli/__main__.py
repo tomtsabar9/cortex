@@ -22,7 +22,7 @@ def get_users():
     
     users_url = URL + "users"
     # sending get request and saving the response as response object 
-    r = requests.get(url = users_url, timeout=1) 
+    r = requests.get(url = users_url, timeout=3) 
   
     # extracting data in json format 
     data = r.json() 
@@ -33,7 +33,7 @@ def get_users():
 def get_user(user_id):
     user_url = URL + 'users/' + user_id
     # sending get request and saving the response as response object 
-    r = requests.get(url = user_url, timeout=1) 
+    r = requests.get(url = user_url, timeout=3) 
   
     # extracting data in json format 
     data = r.json() 
@@ -44,7 +44,7 @@ def get_user(user_id):
 def get_snapshots(user_id):
     snapshots_url = URL + 'users/' + user_id + '/snapshots'
     # sending get request and saving the response as response object 
-    r = requests.get(url = snapshots_url, timeout=1) 
+    r = requests.get(url = snapshots_url, timeout=3) 
   
     # extracting data in json format 
     data = r.json() 
@@ -56,7 +56,7 @@ def get_snapshots(user_id):
 def get_snapshot(user_id, snapshot_id):
     snapshot_url = URL + "users/" + user_id + "/snapshots/" + snapshot_id
     # sending get request and saving the response as response object 
-    r = requests.get(url = snapshot_url, timeout=1) 
+    r = requests.get(url = snapshot_url, timeout=3) 
   
     # extracting data in json format 
     data = r.json() 
@@ -69,7 +69,7 @@ def get_snapshot(user_id, snapshot_id):
 def get_result(user_id, snapshot_id, result):
     result_url = URL + "users/" + user_id + "/snapshots/" + snapshot_id + "/" +result
     # sending get request and saving the response as response object 
-    r = requests.get(url = result_url, timeout=1) 
+    r = requests.get(url = result_url, timeout=3) 
     
     # extracting data in json format 
     data = r.text 

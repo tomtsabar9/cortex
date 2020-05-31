@@ -1,1 +1,2 @@
-from .gui import run as run_server
+from .gui import run_server
+from .. import DummyRequests

@@ -11,5 +11,6 @@ from .connection import Connection
 from .dummy import DummyStream
 from .dummy import DummyConn
 from .dummy import DummyQueue
+from .dummy import DummyRequests
 from .utils import get_table
 from .utils import random_string
