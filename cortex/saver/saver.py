@@ -5,6 +5,7 @@ from sqlalchemy.sql import select
 
 from pathlib import Path
 import json 
+import os
 
 from .. import get_table
 from .. import random_string
@@ -30,6 +31,11 @@ def run_saver(db_url, queue_url):
     
 def save(database, data_type, data):
 
+    username = os.environ.get('_USERNAME')
+    password = os.environ.get('_PASSWORD')
+
+    database = database.replace('://', '://'+username+':'+password+'@')
+
     cortex_db = db.create_engine(database)
 
     if data_type in all_savers.keys():
@@ -42,7 +48,6 @@ def save(database, data_type, data):
         parser = path.parent.name
         user_id = path.parent.parent.name
 
-        print (parser)
         raw_saver(parser, user_id, time, data, cortex_db)
 
     return True

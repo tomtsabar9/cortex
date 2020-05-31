@@ -9,14 +9,14 @@ def cli():
     pass
 
 @click.command()
-@click.argument('db_url', nargs=1, default='postgresql://tomtsabar9@gmail.com:mysecretpassword@127.0.0.1:5432/', type=click.UNPROCESSED)
+@click.argument('db_url', nargs=1, default='postgresql://127.0.0.1:5432/', type=click.UNPROCESSED)
 @click.argument('queue_url', nargs=1, default='rabbitmq://127.0.0.1:5672/', type=click.UNPROCESSED)
 def run_saver(db_url, queue_url):
      
     run_saver_imp(db_url, queue_url)
 
 @click.command()
-@click.option('-d', '--database', default='postgresql://tomtsabar9@gmail.com:mysecretpassword@127.0.0.1:5432/', help='database to save the information to')
+@click.option('-d', '--database', default='postgresql://127.0.0.1:5432/', help='database to save the information to')
 @click.argument('parser', nargs=1, required=True, type=click.UNPROCESSED)
 @click.argument('data_file', nargs=1, required=True, type=click.UNPROCESSED)
 def save(database, parser, data_file):

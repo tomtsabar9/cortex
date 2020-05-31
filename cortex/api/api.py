@@ -8,6 +8,7 @@ from .. import get_table
 from pathlib import Path
 import flask
 from flask_cors import cross_origin
+import os
 
 
 def run_api_server(host, port, database, cli=False):
@@ -18,18 +19,27 @@ def run_api_server(host, port, database, cli=False):
     api = create_api(database)  
     api.run(host=host, port=port, debug=cli)
 
-def create_api(db_url):
+def create_api(database):
     """
     Returns an flask appication the runs the api.
     The api reads directly from the database, parses the data serves it to the clinet, 
     """
-    app = flask.Flask(__name__)
-    app.config["DEBUG"] = True
 
-    if 'postgresql' in db_url:
-        cortex_db = db.create_engine(db_url, pool_size=50, max_overflow=0)
+    username = os.environ.get('_USERNAME')
+    password = os.environ.get('_PASSWORD')
+
+    print (password)
+
+    database = database.replace('://', '://'+username+':'+password+'@')
+
+    print (database)
+
+    app = flask.Flask(__name__)
+
+    if 'postgresql' in database:
+        cortex_db = db.create_engine(database, pool_size=50, max_overflow=0)
     else:
-        cortex_db = db.create_engine(db_url)
+        cortex_db = db.create_engine(database)
 
     @app.route('/users', methods=['GET'])
     def users():

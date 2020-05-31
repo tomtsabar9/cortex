@@ -1,4 +1,5 @@
 import pika
+import os
 from urllib.parse import urlparse
 
 class MsgQueue:
@@ -11,8 +12,12 @@ class MsgQueue:
         purl = urlparse(url)
         self.type = purl.scheme
 
+        username = os.environ.get('_USERNAME')
+        password = os.environ.get('_PASSWORD')
+
         if self.type == "rabbitmq":
-            credentials = pika.PlainCredentials('tomtsabar9@gmail.com', 'mysecretpassword')
+
+            credentials = pika.PlainCredentials(username, password)
             connection = pika.BlockingConnection(pika.ConnectionParameters(purl.hostname, purl.port, purl.path, credentials))
             self.msgChannel = connection.channel() 
         elif self.type == "dummy":
