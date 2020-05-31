@@ -28,7 +28,7 @@ Welcome to cortex's documentation!
 .. automodule:: cortex.parsers.parsers
     :members:
 
-.. automodule:: cortex.queue.queue
+.. autoclass:: cortex.queue.MsgQueue
     :members:
 
 .. automodule:: cortex.reader.formats
