@@ -22,7 +22,7 @@ Welcome to cortex's documentation!
 .. automodule:: cortex.client.client
     :members:
 
-.. automodule:: cortex.connection.connection
+.. autoclass:: cortex.connection.Connection
     :members:
 
 .. automodule:: cortex.parsers.parsers

@@ -76,6 +76,9 @@ def send_snapshot(conn, data_stream, formating):
     return send_serialized_data(conn, data_stream, default_formater)
     
 def getReader(path, encoding):
+    """
+    Returns the matching reader for any encoding
+    """
     if encoding == 'gz':
         return gzip.open(path,'rb')
 
