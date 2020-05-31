@@ -28,15 +28,11 @@ def create_api(database):
     username = os.environ.get('_USERNAME')
     password = os.environ.get('_PASSWORD')
 
-    print (password)
-
-    database = database.replace('://', '://'+username+':'+password+'@')
-
-    print (database)
 
     app = flask.Flask(__name__)
 
     if 'postgresql' in database:
+        database = database.replace('://', '://'+username+':'+password+'@')
         cortex_db = db.create_engine(database, pool_size=50, max_overflow=0)
     else:
         cortex_db = db.create_engine(database)
@@ -120,7 +116,6 @@ def create_api(database):
 
         snapshot = connection.execute(s).fetchall()[0]
 
-        print (snapshot[3])
         snap_json = dict()
         snap_json['id'] = snapshot[0]
         snap_json['time'] = snapshot[2]

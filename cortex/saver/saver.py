@@ -34,9 +34,12 @@ def save(database, data_type, data):
     username = os.environ.get('_USERNAME')
     password = os.environ.get('_PASSWORD')
 
-    database = database.replace('://', '://'+username+':'+password+'@')
-
-    cortex_db = db.create_engine(database)
+    if 'postgresql' in database:
+        database = database.replace('://', '://'+username+':'+password+'@')
+        cortex_db = db.create_engine(database, pool_size=50, max_overflow=0)
+    else:
+        cortex_db = db.create_engine(database)
+    
 
     if data_type in all_savers.keys():
         all_savers[data_type](data, cortex_db)

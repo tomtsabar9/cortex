@@ -4,12 +4,24 @@
 
 Final project in "Advanced System Design" course.
 
-You are welcome to follow my progress on Trello https://trello.com/b/7jks3j5q/cortex.
+You are more than welcome to follow my progress on Trello https://trello.com/b/7jks3j5q/cortex.
 
 See documentation in https://cortex-project.readthedocs.io/en/latest/.
+
 ## Overview
+The project holds 9 microservices:
+1. Client that uploads cortex data of some users.
+2. Server that get data from users and pass it through queue to the parsers.
+3. RabbitMQ.
+4. Parsers that parse the data and pass it through queue to the savers.
+5. Savers that save the parsed data in a database.
+6. The DB.
+7. API that responsible for comfortable interface for developers.
+8. CLI that consumes the API, mostly for debuging.
+9. GUI that responsible for viewing everything nicely 
+
 ![Image of system](https://raw.githubusercontent.com/tomtsabar9/cortex/master/system.png)
-TODO fill
+
 
 ## Installation
 
@@ -190,6 +202,50 @@ python:
 ## Intergration
 
 ### Adding a parser
+
+There exists two kinds of parser - image and regular.
+In order to add another parsers just go to the parsers.py file, add a parser function with one data argumant and simple return value. Add the @parser('new_parser') decorator to finish the job. As seen in the 'pose' parser the return value is the parsed data.
+
+```pycon
+@parser('pose')
+def parse_pose(data):
+
+        
+    pose = PoseMsg()
+    pose.ParseFromString(data)
+
+    pose_json = json.dumps(dict(
+            px = pose.translation.x,
+            py = pose.translation.y,
+            pz = pose.translation.z,
+            rx = pose.rotation.x,
+            ry = pose.rotation.y,
+            rz = pose.rotation.z,
+            rw = pose.rotation.w
+            ))
+    return pose_json
+```
+
+The image parser is a little bit more complected, it saves the image in a temporary location and return its path.
+The wrapper responsible for moving the temporary image file to the right location.
+
+```pycon
+@parser('color_image')
+def parse_color_image(data):
+        
+
+    color_image = ColorImageMsg()
+    color_image.ParseFromString(data)
+
+    image = Image.frombytes("RGB", (color_image.width, color_image.height), color_image.data, 'raw')
+
+    tmp_file = tempfile.NamedTemporaryFile()                
+    path_str = tmp_file.name
+    tmp_file.close()
+
+    image.save(path_str, 'png')
+    return path_str
+```
 
 
 
