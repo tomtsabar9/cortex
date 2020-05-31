@@ -6,17 +6,44 @@ from . import DummyQueue
 
 import pytest
 
+POSE_DATE = b'\n\x1b\t\x00\x00\x00\xc0\xf1h\xb5\xbf\x11\x00\x00\x00@\xa4\xc3\xa0?\x19\x00\x00\x00`+r\xdc?\x12$\t\xee\x90S(\xbe\xb5\xc7\xbf\x11,\x1f\x8d\xa8\xa2Y\x88\xbf\x19\xb8\\Vh\xb4\xbd\x87?!G\xab\nk\x15q\xef?'
+FEELINGS_DATA = b'\ro\x12\x83:\x15\xa6\x9bD;\x1do\x12\x03;'
+DEPTH_DATA = b'\x08\x01\x10\x01\x1a\x04\x00\x00\x00?'
+COLOR_DATA = b'\x08\x01\x10\x01\x1a\x06112233'
+
+POSE_JSON = '{"px": -0.08363257348537445, "py": 0.03274262696504593, "pz": 0.44446834921836853, "rx": -0.18523385018409705, "ry": -0.011889715927864218, "rz": 0.01159230178272562, "rw": 0.9825541582734808}'
+FEELINGS_JSON = '{"hunger": 0.0010000000474974513, "thirst": 0.003000000026077032, "exhaustion": 0.0020000000949949026, "happiness": 0.0}'
+DEPTH_PARTIAL = b'\x00@\x8c\x01\x04\x00\x881\x80\x00\x001\x06\x10\x00 \xc6\x00\x02\x00\xc4\x18@\x00\x80\x18\x03\x08\x00\x10c\x00\x01\x00b\x0c \x00@\x8c\x01\x04\x00\x881\x80\x00\x001\x06\x10\x00 \xc6\x00\x02\x00\xc4\x18@\x00\x80\x18\x03\x08\x00\x10c\x00\x01\x00b\x0c \x00@\x8c\x01\x04\x00\x881\x80\x00\x001\x06\x10\x00 \xc6\x00\x02\x00\xc4\x18@\x00\x80\x18\x03\x08\x00\x10c\x00\x01\x00b\x0c \x00@\x8c\x01\x04\x00\x881\x80\x00\x001\x06\x10\x00 \xc6\x00\x02\x00\xc4\x18@\x00\x80\x18\x03\x08\x00\x10c\x00\x01\x00b\x0c \x00@\x8c\x01\x04\x00\x881\x80\x00\x001\x06\x10\x00 \xc6\x00\x02\x00\xc4\x18@\x00\x80\x18\x03\x08\x00\x10c\x00\x01\x00b\x0c'
+COLOR_IMAGE = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDATx\x9cc044\x02\x00\x01+\x00\x95\xb3\xb4\xd9U\x00\x00\x00\x00IEND\xaeB`\x82'
 def test_pose_parser(tmp_path):
     
-    data = b'\n\x1b\t\x00\x00\x00\xc0\xf1h\xb5\xbf\x11\x00\x00\x00@\xa4\xc3\xa0?\x19\x00\x00\x00`+r\xdc?\x12$\t\xee\x90S(\xbe\xb5\xc7\xbf\x11,\x1f\x8d\xa8\xa2Y\x88\xbf\x19\xb8\\Vh\xb4\xbd\x87?!G\xab\nk\x15q\xef?'
-
-    json_msg = '{"px": -0.08363257348537445, "py": 0.03274262696504593, "pz": 0.44446834921836853, "rx": -0.18523385018409705, "ry": -0.011889715927864218, "rz": 0.01159230178272562, "rw": 0.9825541582734808}'
-    assert parse('pose', data) == json_msg
+    assert parse('pose', POSE_DATE) == POSE_JSON
 
 
 def test_feelings_parser(tmp_path):
-    
-    data = b'\ro\x12\x83:\x15\xa6\x9bD;\x1do\x12\x03;'
+     
+    assert parse('feelings', FEELINGS_DATA) == FEELINGS_JSON
 
-    json_msg = '{"hunger": 0.0010000000474974513, "thirst": 0.003000000026077032, "exhaustion": 0.0020000000949949026, "happiness": 0.0}'
-    assert parse('feelings', data) == json_msg
+def test_depth_image_parser(tmp_path):
+
+    file = parse('depth_image', DEPTH_DATA)
+     
+    assert DEPTH_PARTIAL in open(file, 'rb').read()
+
+def test_color_image_parser(tmp_path):
+
+    file = parse('color_image', COLOR_DATA)
+
+    assert COLOR_IMAGE == open(file, 'rb').read()
+     
+
+def test_parsers_factory():
+    dummyQueue = DummyQueue()
+
+    parsers = queue_parser_factory(dummyQueue)
+
+    assert 'pose' in parsers.keys()
+    assert 'color_image' in parsers.keys()
+    assert 'depth_image' in parsers.keys()
+    assert 'feelings' in parsers.keys()
+
