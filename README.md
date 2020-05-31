@@ -40,7 +40,7 @@ The project holds 9 microservices:
     ```
 2. Run the installation script and activate the virtual environment:
     ```sh
-    $ ./scripts/install.sh
+    $ . ./scripts/install.sh
     ...
     $ source .env/bin/activate
     [cortex] $ chmod +x ./scripts/run_pipeline.sh
@@ -60,7 +60,7 @@ Download a sample and put it in:
 
 
 ```sh
-[cortex] $ ./scripts/run_pipeline.sh <email> <password>
+[cortex] $ sudo ./scripts/run_pipeline.sh <email> <password>
 ```
 This will run two scripts:
     1. ./scripts/start_dockers.sh
