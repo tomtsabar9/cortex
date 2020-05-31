@@ -16,7 +16,7 @@ def upload_sample(host, port, path, encoding='gz', formating='proto'):
 
     print ('Client starting...')
     try:
-        reader = getReader(path, encoding)
+        reader = get_reader(path, encoding)
 
         with Connection.connect(host, int(port)) as conn:
             with reader as raw_data:
@@ -75,7 +75,7 @@ def send_snapshot(conn, data_stream, formating):
 
     return send_serialized_data(conn, data_stream, default_formater)
     
-def getReader(path, encoding):
+def get_reader(path, encoding):
     """
     Returns the matching reader for any encoding
     """
