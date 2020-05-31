@@ -60,7 +60,7 @@ Download a sample and put it in:
 
 
 ```sh
-$ sudo . ./scripts/run_pipeline.sh <email> <password>
+$ sudo ./scripts/run_pipeline.sh <email> <password>
 ```
 This will run two scripts:
     1. ./scripts/start_dockers.sh
