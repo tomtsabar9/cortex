@@ -28,7 +28,7 @@ The project holds 9 microservices:
 1. Clone the repository and enter it:
 
     ```sh
-    $ git clone git@github.com:tomtsabar9/cortex.git
+    $ git clone https://github.com/tomtsabar9/cortex.git
     ...
     $ cd cortex/
     ```
