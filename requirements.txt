@@ -9,7 +9,7 @@ Click==7.0
 codecov==2.0.15
 coverage==5.0.1
 cycler==0.10.0
-Django==3.0.3
+Django==3.0.7
 docker==4.2.0
 docutils==0.15.2
 entrypoints==0.3
