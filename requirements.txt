@@ -6,7 +6,7 @@ Babel==2.7.0
 certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
-codecov==2.0.15
+codecov==2.0.16
 coverage==5.0.1
 cycler==0.10.0
 Django==3.0.3
